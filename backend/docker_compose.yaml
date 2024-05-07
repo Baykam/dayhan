@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+
+  dayhan_go_db:
+    container_name: 'dayhan'
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=dayhan
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres  
