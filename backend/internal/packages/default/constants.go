@@ -4,7 +4,7 @@ const (
 	Authorization = "Authorization"
 	SetUserId     = "SetUserId"
 	HeaderUserId  = "user_id"
-	TableUser     = "user"
+	TableUser     = "users"
 	TableProduct  = "product"
 	TableOrder    = "order"
 )

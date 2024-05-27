@@ -8,4 +8,5 @@ func Response(c *gin.Context, code int, data any) {
 
 func Error(c *gin.Context, code int, message string) {
 	c.JSON(code, gin.H{"error": message})
+	c.Abort()
 }

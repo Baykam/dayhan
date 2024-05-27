@@ -1,10 +1,11 @@
 package rds
 
 import (
+	"context"
 	"dayhan/internal/packages/config"
 	"fmt"
 
-	"github.com/go-redis/redis/v8"
+	"github.com/redis/go-redis/v9"
 )
 
 type RedisDatabase struct {
@@ -19,9 +20,13 @@ func LoadRedis(cfg *config.Schema) (*RedisDatabase, error) {
 		DB:       cfg.RedisDb,
 		Password: cfg.RedisPass,
 	})
+	ctx := context.Background()
 
-	if err := rds.Ping(rds.Context()).Err(); err != nil {
-		return nil, fmt.Errorf("redis bağlantısı kurulamadı: %v", err)
+	fmt.Printf("Connecting to Redis at %s\n", cfg.RedisAddr)
+
+	if err := rds.Ping(ctx).Err(); err != nil {
+		fmt.Printf("Error connecting to Redis: %v\n", err)
+		return nil, err
 	}
 
 	productRedis = &RedisDatabase{Redis: rds}

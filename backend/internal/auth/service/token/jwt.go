@@ -97,14 +97,18 @@ func (c *jwtAuth) VerifyToken(req VerifyTokenRequest) (VerifyTokenResponse, erro
 
 	if err != nil {
 		if errors.Is(err, ErrExpiredToken) {
-			return VerifyTokenResponse{}, ErrExpiredToken
+			return VerifyTokenResponse{}, err
 		}
-		return VerifyTokenResponse{}, ErrInvalidToken
+		return VerifyTokenResponse{}, err
 	}
 
 	claims, ok := token.Claims.(*jwtClaims)
 	if !ok {
 		return VerifyTokenResponse{}, ErrFailedToParseToken
+	}
+
+	if err := claims.Valid(); err != nil {
+		return VerifyTokenResponse{}, err
 	}
 
 	response := VerifyTokenResponse{

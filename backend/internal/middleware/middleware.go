@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func TokenAuthMiddleware(tokenService token.TokenService) gin.HandlerFunc {
+func UserMiddleware(tokenService token.TokenService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.GetHeader(defaa.Authorization)
 
@@ -19,7 +19,7 @@ func TokenAuthMiddleware(tokenService token.TokenService) gin.HandlerFunc {
 
 		response, err := tokenService.VerifyToken(verifyRequest)
 		if err != nil {
-			utils.Error(c, 401, defaa.ErrUnAuthorized.Error())
+			utils.Error(c, 401, err.Error())
 			c.Abort()
 			return
 		}

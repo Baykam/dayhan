@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "dayhan/cmd/docs"
 	"dayhan/internal/packages/config"
 	"dayhan/internal/packages/db"
 	rds "dayhan/internal/packages/redis"
@@ -10,15 +11,19 @@ import (
 	"github.com/quangdangfit/gocommon/validation"
 )
 
+// @title Tag Service API
 func main() {
 	cfg := config.LoadConfig()
 	logger.Initialize(cfg.Environment)
 
-	db, err := db.NewDatabase(cfg.DbUrl)
+	dB, err := db.NewDatabase(cfg.DbUrl)
 	if err != nil {
 		logger.Errorf("error when database connect, error: %v", err)
 	}
-	defer db.Close()
+	defer dB.Close()
+	if err != nil {
+		logger.Errorf("error when create tables: %v", err)
+	}
 
 	validator := validation.New()
 
@@ -27,7 +32,7 @@ func main() {
 		logger.Errorf("error when redis connect, error: %v", err)
 	}
 
-	httpServer := server.NewServer(validator, db, *rds)
+	httpServer := server.NewServer(validator, dB, *rds)
 	if err := httpServer.Run(); err != nil {
 		logger.Fatal(err)
 	}

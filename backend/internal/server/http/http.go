@@ -7,6 +7,7 @@ import (
 	"dayhan/internal/middleware"
 	"dayhan/internal/packages/config"
 	rds "dayhan/internal/packages/redis"
+	productRoutes "dayhan/internal/product/port/http"
 	"fmt"
 	"log"
 	"net/http"
@@ -14,6 +15,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/quangdangfit/gocommon/logger"
 	"github.com/quangdangfit/gocommon/validation"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Server struct {
@@ -47,7 +50,7 @@ func (s Server) Run() error {
 		log.Fatalf("MapRoutes Error: %v", err)
 	}
 
-	// s.engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	s.engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	s.engine.GET("/health", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, nil)
 	})
@@ -72,6 +75,7 @@ func (s Server) AuthRoutes(token token.TokenService) error {
 
 func (s Server) MapRoutes(token token.TokenService) error {
 	v1 := s.engine.Group("/api/v1")
-	v1.Use(middleware.TokenAuthMiddleware(token))
+	v1.Use(middleware.UserMiddleware(token))
+	productRoutes.Routes(v1, s.db, &s.validator)
 	return nil
 }

@@ -1,23 +1,19 @@
--- Kullanıcı tablosu
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   created_at TIMESTAMP NOT NULL DEFAULT (now()),
   updated_at TIMESTAMP NOT NULL DEFAULT (now()),
-  deleted_at TIMESTAMP,
-  email VARCHAR(255) UNIQUE,
-  refresh_token VARCHAR(255) NOT NULL UNIQUE,
-  phone VARCHAR(30),
-  user_id VARCHAR(200)
+  email VARCHAR(255),
+  user_id VARCHAR(255) NOT NULL UNIQUE,
+  phone VARCHAR(30) NOT NULL
 );
 
--- Ürün tablosu
 CREATE TABLE IF NOT EXISTS product (
   id SERIAL PRIMARY KEY,
   created_at TIMESTAMP NOT NULL DEFAULT (now()),
   updated_at TIMESTAMP NOT NULL DEFAULT (now()),
   deleted_at TIMESTAMP,
   name VARCHAR(255) NOT NULL,
-  description TEXT,
+  description TEXT,  -- Changed varchar to TEXT for longer descriptions
   price DECIMAL(10,2) NOT NULL,
-  user_id INTEGER REFERENCES users(id)
+  user_id INTEGER REFERENCES users(id)  -- Foreign key constraint for user association
 );

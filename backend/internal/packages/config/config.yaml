@@ -1,23 +1,11 @@
 environment: production
-http_port: 8888
+http_port: 9999
 
-db_url: postgres://postgres:123456@localhost:5432/dayhan?sslmode=disable
+db_url: postgresql://root:password@localhost:5433/dayhan_db?sslmode=disable
 
-rds_addr: "localhost:6379"
+rds_addr: localhost:6380
 rds_pas:
 rds_db: 0
 
-auth_key: "AuthKey"
-user_key: "UserKey"
-
-
-# postgres.yaml
-# version: "3.8"
-# services:
-#   my-postgres:
-#     name: dayhan
-#     image: postgres
-#     environment:
-#       POSTGRES_PASSWORD: 553623
-#     ports:
-#       - "5433:5432"
+auth_key: "i45u934ujfskdmflfsdkfweuut934utjksdfksmdkfmdkfhsdherwreurugttfdbsbsfhgwyrt7324wefhbdbfshdfgysdgf783t32grbfdsn"
+user_key: "hbgrehgeknjergb84983rhjfh384yt3u4hg83unu3g2h3hfn923fh283fn23ugf273gbfy3g893h4bfu344374h3f34gf34gf2ihe2ijwj2je"

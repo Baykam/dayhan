@@ -6,7 +6,7 @@ type PhonePostReq struct {
 
 type PhonePostRes struct {
 	VerifyKey string `json:"verify_key"`
-	// UserID    string `json:"user_id"`
+	UserID    string `json:"user_id"`
 }
 
 type TokenPostReq struct {
@@ -17,4 +17,12 @@ type TokenPostReq struct {
 type TokenPostRes struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
+}
+
+type RefreshTokenReq struct {
+	RefreshToken string `json:"refresh_token"`
+}
+
+type RefreshTokenRes struct {
+	AccessToken string `json:"access_token"`
 }
