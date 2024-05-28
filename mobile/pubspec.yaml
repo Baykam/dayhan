@@ -24,7 +24,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # json
-  json_annotation: ^4.8.1
+  json_annotation: ^4.9.0
   freezed_annotation: ^2.4.1
 
   # cache
@@ -66,7 +66,7 @@ dev_dependencies:
 
 
 flutter_gen:
-  output: lib/src/domain/asset/
+  output: lib/src/src/utils/assets/
   line_length: 80 
 
   # Optional
@@ -76,15 +76,14 @@ flutter_gen:
     # rive: true
     lottie: true
 
-  colors:
-    inputs:
-      - assets/color/colors.xml
+  # colors:
+  #   inputs:
+  #     - assets/color/colors.xml
 
 flutter:
   generate: true
   uses-material-design: true
   assets:
     - assets/images/
-    # - assets/color/
-    # - assets/icons/
-    # - assets/lottie/
+    - assets/icons/
+    - assets/lottie/
