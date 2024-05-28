@@ -1,3 +1,4 @@
+import 'package:dayhan_mobile/src/application/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +10,9 @@ final class StateInitializer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [],
+      providers: [
+        BlocProvider(create: (context) => PostPhoneBloc()),
+      ],
       child: child,
     );
   }

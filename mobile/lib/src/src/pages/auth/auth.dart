@@ -1,3 +1,4 @@
+import 'package:dayhan_mobile/src/src/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
 part 'mixin_auth.dart';
@@ -13,6 +14,10 @@ final class Auth extends StatefulWidget {
 class _AuthState extends State<Auth> with MixinAuth {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: CAppbar(
+        title: 'Please Give Phone',
+      ),
+    );
   }
 }
