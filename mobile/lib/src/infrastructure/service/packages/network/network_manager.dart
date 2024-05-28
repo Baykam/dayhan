@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dayhan_mobile/src/infrastructure/index.dart';
+import 'package:dayhan_mobile/src/src/utils/index.dart';
 import 'package:http/http.dart' as http;
 
 /// product network manage in this class
@@ -17,7 +18,8 @@ final class NetworkManager {
     bool? needHeader,
     bool? baseUrl,
   }) async {
-    final token = await CacheManager.shared.getString('key');
+    final token =
+        await CacheManager.shared.getString(CachePaths.accessKey.path);
     final headers = {
       'Authorization': token ?? '',
     };
@@ -35,6 +37,7 @@ final class NetworkManager {
       headers: needHeader ?? false ? headers : null,
     );
     if (res.statusCode == 401) {
+      await RefreshToken().refreshToken(token: token ?? '');
       returnFunc?.call();
     }
 
@@ -49,7 +52,8 @@ final class NetworkManager {
     bool? needHeader,
     bool? baseUrl,
   }) async {
-    final token = await CacheManager.shared.getString('key');
+    final token =
+        await CacheManager.shared.getString(CachePaths.accessKey.path);
     final headers = {
       'Authorization': token ?? '',
     };
@@ -68,6 +72,7 @@ final class NetworkManager {
       headers: needHeader ?? false ? headers : null,
     );
     if (res.statusCode == 401) {
+      await RefreshToken().refreshToken(token: token ?? '');
       returnFunc?.call();
     }
 
@@ -82,7 +87,8 @@ final class NetworkManager {
     bool? needHeader,
     bool? baseUrl,
   }) async {
-    final token = await CacheManager.shared.getString('key');
+    final token =
+        await CacheManager.shared.getString(CachePaths.accessKey.path);
     final headers = {
       'Authorization': token ?? '',
     };
@@ -101,6 +107,7 @@ final class NetworkManager {
       headers: needHeader ?? false ? headers : null,
     );
     if (res.statusCode == 401) {
+      await RefreshToken().refreshToken(token: token ?? '');
       returnFunc?.call();
     }
 

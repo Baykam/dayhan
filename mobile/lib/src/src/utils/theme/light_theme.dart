@@ -7,4 +7,7 @@ final class ProductLightTheme implements CustomTheme {
   ThemeData get themeData => ThemeData.light(
         useMaterial3: true,
       );
+
+  @override
+  AppBarTheme get appBarTheme => const AppBarTheme();
 }

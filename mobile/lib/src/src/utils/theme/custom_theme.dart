@@ -4,4 +4,7 @@ import 'package:flutter/material.dart';
 abstract class CustomTheme {
   /// theme data
   ThemeData get themeData;
+
+  /// app bar theme data
+  AppBarTheme get appBarTheme;
 }

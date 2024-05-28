@@ -1,4 +1,4 @@
-import 'package:dayhan_mobile/src/src/widgets/appbar.dart';
+import 'package:dayhan_mobile/src/src/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
 part 'mixin_auth.dart';

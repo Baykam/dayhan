@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter  
 
   # state management
   flutter_bloc: ^8.1.5
@@ -22,6 +24,8 @@ dependencies:
 
   # core
   cupertino_icons: ^1.0.2
+  intl: ^0.18.1
+  responsive_framework: ^1.4.0
 
   # json
   json_annotation: ^4.9.0
