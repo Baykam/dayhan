@@ -2,6 +2,7 @@
 
 import 'package:dayhan_mobile/src/domain/i_post_phone.dart';
 import 'package:dayhan_mobile/src/infrastructure/index.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -15,6 +16,8 @@ final class PostPhoneBloc extends Bloc<PostPhoneEvent, PostPhoneState> {
         super(_Initial()) {
     on<_PhoneSend>(_onPhoneSend);
   }
+
+  final phone = TextEditingController();
 
   final IPostPhone _phone;
 
@@ -31,6 +34,7 @@ final class PostPhoneBloc extends Bloc<PostPhoneEvent, PostPhoneState> {
         ),
       );
     } catch (e) {
+      print(e.toString());
       emit(_Failed(m: e.toString()));
     }
   }

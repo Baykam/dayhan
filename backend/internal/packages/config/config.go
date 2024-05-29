@@ -19,6 +19,7 @@ type Schema struct {
 	RedisDb     int    `env:"rds_db"`
 	AuthKey     string `env:"auth_key"`
 	UserKey     string `env:"user_key"`
+	Host        string `env:"host"`
 }
 
 const (

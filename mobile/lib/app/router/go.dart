@@ -19,7 +19,7 @@ final class ProductRouter {
   /// GoRouter data
   GoRouter router = GoRouter(
     navigatorKey: _key,
-    initialLocation: '/',
+    initialLocation: RoutePath.navbar.path,
     errorBuilder: (context, state) =>
         ErrorPage(mes: state.error?.message ?? ''),
     observers: [
@@ -38,7 +38,11 @@ final class ProductRouter {
     },
     routes: [
       auth,
-      navbar,
+      GoRoute(
+        path: RoutePath.navbar.path,
+        name: RoutePath.navbar.name,
+        builder: (context, state) => const Navbar(),
+      ),
     ],
   );
 

@@ -1,13 +1,16 @@
 import 'dart:convert';
 
+import 'package:dayhan_mobile/app/router/go.dart';
+import 'package:dayhan_mobile/app/router/path.dart';
 import 'package:dayhan_mobile/src/infrastructure/index.dart';
 import 'package:dayhan_mobile/src/src/utils/index.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
 final class RefreshToken {
   Future<void> refreshToken({required String token}) async {
     final r = await CacheManager.shared.getString(CachePaths.refreshKey.path);
-    final uri = '${Api.localHost.url}/auth/refresh/';
+    final uri = '${Api.localHost.url}/auth/refresh_token/';
 
     final header = {'Authorization': token};
     final body = {'refresh_token': r ?? ''};
@@ -23,6 +26,8 @@ final class RefreshToken {
           .setString(CachePaths.accessKey.path, tt.access_token ?? '');
     } else {
       await CacheManager.shared.setString(CachePaths.accessKey.path, '');
+      await CacheManager.shared.setString(CachePaths.refreshKey.path, '');
+      ProductRouter().key.currentContext?.goNamed(RoutePath.auth.path);
     }
   }
 }

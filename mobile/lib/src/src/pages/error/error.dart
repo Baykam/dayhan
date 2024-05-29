@@ -1,3 +1,4 @@
+import 'package:dayhan_mobile/src/src/utils/index.dart';
 import 'package:flutter/material.dart';
 
 final class ErrorPage extends StatelessWidget {
@@ -6,8 +7,15 @@ final class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(mes),
+      body: Column(
+        children: [
+          Assets.lottie.errorLottie.lottie(
+            height: 100,
+          ),
+          Center(
+            child: Text(mes),
+          ),
+        ],
       ),
     );
   }

@@ -7,7 +7,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 /// [DESKTOP] 801 - 1920
 /// [4K] 1921 - double.infinity
 /// [CustomResponsive.build(context, child)]
-final class MyWidget {
+final class ProductResponsive {
   /// Make to ui responsive
   static Widget build(BuildContext context, Widget child) {
     return ResponsiveBreakpoints.builder(

@@ -12,6 +12,7 @@ type PhonePostRes struct {
 type TokenPostReq struct {
 	SMS       string `json:"sms"`
 	VerifyKey string `json:"verify_key"`
+	UserId    string `json:"user_id"`
 }
 
 type TokenPostRes struct {

@@ -58,7 +58,7 @@ func (p Port) PostAuthUser(c *gin.Context) {
 		UserID:    userID,
 	}
 
-	c.JSON(http.StatusOK, res)
+	c.JSON(http.StatusCreated, res)
 }
 
 func (p Port) PostToken(c *gin.Context) {
@@ -68,14 +68,12 @@ func (p Port) PostToken(c *gin.Context) {
 		return
 	}
 
-	header := c.GetHeader(defaa.HeaderUserId)
-
 	phone_number, user_id := statics.GetRedisKeys(req.VerifyKey)
 
 	cmdP := p.rds.Redis.Get(c, phone_number)
 	cmdU := p.rds.Redis.Get(c, user_id)
 
-	if req.SMS != "123456" || header != cmdU.Val() {
+	if req.SMS != "123456" || req.UserId != cmdU.Val() {
 		utils.Error(c, 404, defaa.ErrInvalidData.Error())
 		return
 	}
@@ -113,7 +111,7 @@ func (p Port) PostToken(c *gin.Context) {
 		RefreshToken: refreshToken.TokenString,
 	}
 
-	c.JSON(200, response)
+	c.JSON(http.StatusCreated, response)
 }
 
 func (p *Port) TokenRefresh(c *gin.Context) {

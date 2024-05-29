@@ -11,15 +11,16 @@ import (
 	"github.com/quangdangfit/gocommon/validation"
 )
 
-func Routes(r *gin.RouterGroup, db *sql.DB, validator *validation.Validation, rds rds.RedisDatabase, token token.TokenService) {
+func Routes(r *gin.Engine, db *sql.DB, validator *validation.Validation, rds rds.RedisDatabase, token token.TokenService) {
+
 	database := repository.NewRepository(db)
 	service := service.NewAuthService(database)
 
 	port := NewPort(rds, token, service)
-
+	a := r.Group("auth")
 	{
-		r.POST("", port.PostAuthUser)
-		r.POST("/token", port.PostToken)
-		r.POST("/refresh_token", port.TokenRefresh)
+		a.POST("", port.PostAuthUser)
+		a.POST("/token", port.PostToken)
+		a.POST("/refresh_token", port.TokenRefresh)
 	}
 }

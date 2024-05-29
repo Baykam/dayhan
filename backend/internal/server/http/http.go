@@ -11,7 +11,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/quangdangfit/gocommon/logger"
 	"github.com/quangdangfit/gocommon/validation"
@@ -42,6 +44,17 @@ func (s Server) Run() error {
 
 	token := token.NewTokenService(*s.cfg)
 
+	// CORS ayarlarını burada yapın
+	s.engine.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:45683"}, // Flutter web uygulamanızın ve backend'in adreslerini buraya ekleyin
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization", "verify_key"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+	// s.engine.Use(cors.Default())
+
 	if err := s.AuthRoutes(token); err != nil {
 		log.Fatalf("AuthRoutes Error: %v", err)
 	}
@@ -56,7 +69,7 @@ func (s Server) Run() error {
 	})
 
 	logger.Info("Http server is listening on PORT: ", s.cfg.HttpPort)
-	if err := s.engine.Run(fmt.Sprintf(":%d", s.cfg.HttpPort)); err != nil {
+	if err := s.engine.Run(fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.HttpPort)); err != nil {
 		log.Fatalf("Running Http server: %v", err)
 	}
 
@@ -68,8 +81,7 @@ func (s Server) GetEngine() *gin.Engine {
 }
 
 func (s Server) AuthRoutes(token token.TokenService) error {
-	auth := s.engine.Group("/auth")
-	authRoutes.Routes(auth, s.db, &s.validator, s.rds, token)
+	authRoutes.Routes(s.engine, s.db, &s.validator, s.rds, token)
 	return nil
 }
 

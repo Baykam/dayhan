@@ -13,12 +13,18 @@ final class StateInitializer extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        /// auth states
         BlocProvider(create: (context) => PostPhoneBloc()),
+        BlocProvider(create: (context) => PostTokenBloc()),
+
+        /// default app states
         BlocProvider(
           create: (context) => SettingsBloc()
             ..add(const SettingsEvent.defaultTheme())
             ..add(const SettingsEvent.defaultLocale()),
         ),
+
+        /// data transfer states
       ],
       child: child,
     );

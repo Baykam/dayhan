@@ -31,6 +31,7 @@ func main() {
 	if err != nil {
 		logger.Errorf("error when redis connect, error: %v", err)
 	}
+	defer rds.Redis.Close()
 
 	httpServer := server.NewServer(validator, dB, *rds)
 	if err := httpServer.Run(); err != nil {
