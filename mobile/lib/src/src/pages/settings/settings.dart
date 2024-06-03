@@ -1,4 +1,8 @@
+import 'package:dayhan_mobile/app/router/path.dart';
+import 'package:dayhan_mobile/src/infrastructure/index.dart';
+import 'package:dayhan_mobile/src/src/utils/index.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 final class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -8,15 +12,14 @@ final class SettingsPage extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('settings'),
-          ...List.generate(
-            6,
-            (index) => Container(
-              color: Colors.blue,
-              height: 100,
-            ),
+          ElevatedButton(
+            onPressed: () async {
+              await CacheManager.shared.remove(CachePaths.accessKey.path);
+              context.pushReplacementNamed(RoutePath.auth.name);
+            },
+            child: Text('Log Out'),
           ),
         ],
       ),

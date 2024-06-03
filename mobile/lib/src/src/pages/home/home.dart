@@ -1,46 +1,41 @@
+import 'package:dayhan_mobile/src/application/index.dart';
 import 'package:dayhan_mobile/src/infrastructure/index.dart';
 import 'package:dayhan_mobile/src/src/utils/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+part 'mixin_home.dart';
+
+final class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Assets.lottie.loadingTime.lottie(height: 200, width: 200),
-          ...List.generate(
-            10,
-            (index) => ProductResponsive.build(
-              context,
-              AdaptAllView(
-                phone: Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
-                  color: Colors.blue,
-                  height: 100,
-                  width: MediaQuery.sizeOf(context).width,
-                ),
-                tablet: Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
-                  color: Colors.blue,
-                  height: 100,
-                  width: MediaQuery.sizeOf(context).width,
-                ),
-                desktop: Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
-                  color: Colors.blue,
-                  height: 100,
-                  width: MediaQuery.sizeOf(context).width - 80,
-                ),
-              ),
-            ),
-          ),
-        ],
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with MixinHomePage {
+  @override
+  Widget build(BuildContext context) => getProductList();
+}
+
+Widget getProductList() => BlocBuilder<GetProductListBloc, GetProductListState>(
+      builder: (context, state) => state.maybeWhen(
+        orElse: () => Assets.lottie.errorLottie.lottie(),
+        failed: (m) => Center(
+          child: Text(m),
+        ),
+        success: (p) => ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (context, index) => _successWidget(p[index]),
+          itemCount: p.length,
+          separatorBuilder: (BuildContext context, int index) =>
+              const Divider(),
+        ),
       ),
     );
-  }
-}
+
+Widget _successWidget(Product p) => ListTile(
+      title: Text(p.description ?? ''),
+      subtitle: Text(p.price.toString()),
+    );

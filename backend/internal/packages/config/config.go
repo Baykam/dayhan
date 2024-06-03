@@ -20,6 +20,7 @@ type Schema struct {
 	AuthKey     string `env:"auth_key"`
 	UserKey     string `env:"user_key"`
 	Host        string `env:"host"`
+	ChromePort  int    `env:"chrome_port"`
 }
 
 const (

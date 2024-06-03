@@ -23,7 +23,7 @@ mixin _$Product {
   int? get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  String? get price => throw _privateConstructorUsedError;
+  double? get price => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $ProductCopyWith<$Res> {
   factory $ProductCopyWith(Product value, $Res Function(Product) then) =
       _$ProductCopyWithImpl<$Res, Product>;
   @useResult
-  $Res call({int? id, String? name, String? description, String? price});
+  $Res call({int? id, String? name, String? description, double? price});
 }
 
 /// @nodoc
@@ -72,7 +72,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
       price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
     ) as $Val);
   }
 }
@@ -84,7 +84,7 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       __$$ProductImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int? id, String? name, String? description, String? price});
+  $Res call({int? id, String? name, String? description, double? price});
 }
 
 /// @nodoc
@@ -119,7 +119,7 @@ class __$$ProductImplCopyWithImpl<$Res>
       price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
     ));
   }
 }
@@ -139,7 +139,7 @@ class _$ProductImpl implements _Product {
   @override
   final String? description;
   @override
-  final String? price;
+  final double? price;
 
   @override
   String toString() {
@@ -181,7 +181,7 @@ abstract class _Product implements Product {
       {final int? id,
       final String? name,
       final String? description,
-      final String? price}) = _$ProductImpl;
+      final double? price}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
 
@@ -192,7 +192,7 @@ abstract class _Product implements Product {
   @override
   String? get description;
   @override
-  String? get price;
+  double? get price;
   @override
   @JsonKey(ignore: true)
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>

@@ -7,7 +7,10 @@ enum RoutePath {
   auth(path: '/auth'),
 
   ///[otp]
-  otp(path: 'otp');
+  otp(path: 'otp'),
+
+  ///
+  addProduct(path: 'add_product');
 
   final String path;
 

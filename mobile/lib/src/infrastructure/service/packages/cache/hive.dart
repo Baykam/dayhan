@@ -9,12 +9,18 @@ final class HiveClass {
   final String boxPath;
 
   ///key is [cache] data's String key
-  Future<void> addList<T>({
+  Future<void> add<T>({
     required T cache,
     required dynamic key,
   }) async {
     final box = Hive.box<T>(boxPath);
     await box.put(key, cache);
+  }
+
+  /// get data just one [Object]
+  T? get<T>({required dynamic key}) {
+    final box = Hive.box<T>(boxPath);
+    return box.get(key);
   }
 
   /// box get list

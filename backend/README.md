@@ -1,20 +1,21 @@
-if docker-compose.yaml not working your system you will just write this codes in cmd
-
-
-/// first pull image
-docker pull postgres:16-alpine
-
-///docker create
-docker run --name full-dayhan -p 5436:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=password -d postgres:16-alpine
-
-
-///create inside docker database
-docker exec -it full-dayhan createdb --username=root --owner=root dayhan_db
-
-///drop inside docker database
-docker exec -it full-dayhan dropdb dayhan_db
-
-
-
-///cli database
-docker exec -it full-dayhan psql
+DOCKER INTEGRATION PROJECT
+<!-- 1. Go to the docker folder -->
+cd docker
+<!-- 2. Then build docker images  -->
+docker build -t <image_name> redis/.
+docker build -t <image_name> postgres/.
+<!-- 3. run and give the container name -->
+docker run -d --name <container_name> -p 5433:5432 <image_name>
+docker run -d --name <container_name> -p 6380:6379 <image_name>
+<!-- 4. start container -->
+docker start <container_name>
+<!-- 5. edit the config.yaml -->
+cd ..
+cd internal/packages/config/config.yaml
+<!-- redis file  -->
+localhost:6380
+<!-- postgres file -->
+postgresql://root:password@localhost:5433/dayhan_db?sslmode=disable
+<!-- 6. lastly you will run project -->
+<!-- cd ./cmd/main.go give the terminal here -->
+go run main.go

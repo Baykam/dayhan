@@ -5,6 +5,8 @@ import 'package:dayhan_mobile/src/src/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _tag = 'AppBlocObserver';
@@ -60,6 +62,11 @@ final class ApplicationInitialize {
     ///Cache integration application
     {
       await SharedPreferences.getInstance();
+      final as = await getApplicationCacheDirectory();
+      await Hive.initFlutter(as.path);
+
+      // await Hive.openBox<String>(CachePaths.accessKey.path);
+      // await Hive.openBox<String>(CachePaths.refreshKey.path);
     }
 
     await SystemChrome.setPreferredOrientations(

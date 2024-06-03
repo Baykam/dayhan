@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	authRoutes "dayhan/internal/auth/port/http"
 	"dayhan/internal/auth/service/token"
+	productRoutes "dayhan/internal/client/port/http"
 	"dayhan/internal/middleware"
 	"dayhan/internal/packages/config"
 	rds "dayhan/internal/packages/redis"
-	productRoutes "dayhan/internal/product/port/http"
 	"fmt"
 	"log"
 	"net/http"
@@ -44,9 +44,8 @@ func (s Server) Run() error {
 
 	token := token.NewTokenService(*s.cfg)
 
-	// CORS ayarlarını burada yapın
 	s.engine.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:45683"}, // Flutter web uygulamanızın ve backend'in adreslerini buraya ekleyin
+		AllowOrigins:     []string{fmt.Sprintf("http://localhost:%v", s.cfg.ChromePort)},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization", "verify_key"},
 		ExposeHeaders:    []string{"Content-Length"},

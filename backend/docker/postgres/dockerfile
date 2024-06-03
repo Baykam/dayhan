@@ -1,10 +1,3 @@
-# Redis image Data
-FROM redis:latest
-EXPOSE 6379
-CMD ["redis-server"]
-
-
-
 # Postgres image data 
 FROM postgres:16-alpine
 ENV POSTGRES_DB=dayhan_db

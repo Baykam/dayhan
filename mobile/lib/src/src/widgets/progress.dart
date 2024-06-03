@@ -7,7 +7,10 @@ final class ProductProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Assets.lottie.loadingTime.lottie()),
+      body: Center(
+        child: Assets.lottie.loadingTime
+            .lottie(height: 150, width: 150, fit: BoxFit.cover),
+      ),
     );
   }
 }

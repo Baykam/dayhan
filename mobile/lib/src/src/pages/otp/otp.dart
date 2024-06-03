@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_instance_creation
+
 import 'package:dayhan_mobile/app/router/path.dart';
 import 'package:dayhan_mobile/src/application/index.dart';
 import 'package:dayhan_mobile/src/infrastructure/index.dart';
@@ -63,28 +65,33 @@ class _OtpState extends State<Otp> with MixinOtp {
       );
 
   @override
-  showOtp(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: SizedBox(
-          height: 250,
-          child: BlocConsumer<PostTokenBloc, PostTokenState>(
-            builder: (context, state) => state.maybeWhen(
-              orElse: () => const ProductProgress(),
-              failed: (m) => ProductErrorWidget(error: m),
-              success: (token) => Assets.lottie.accepted.lottie(),
+  showOtp(BuildContext context) => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: SizedBox(
+            height: 250,
+            child: BlocConsumer<PostTokenBloc, PostTokenState>(
+              builder: (context, state) => state.maybeWhen(
+                orElse: () => const ProductProgress(),
+                failed: (m) => ProductErrorWidget(error: m),
+                success: (token) => Assets.lottie.accepted.lottie(),
+              ),
+              listener: (context, state) {
+                state.whenOrNull(
+                  failed: (m) async =>
+                      await Future.delayed(const Duration(seconds: 2))
+                          .then((value) => Navigator.pop(context, false)),
+                  success: (token) async {
+                    await Future.delayed(const Duration(seconds: 2))
+                        .then((value) {
+                      Navigator.pop(context, true);
+                      context.goNamed(RoutePath.navbar.name);
+                    });
+                  },
+                );
+              },
             ),
-            listener: (context, state) {
-              state.whenOrNull(
-                success: (token) {
-                  context.pushNamed(RoutePath.navbar.name);
-                },
-              );
-            },
           ),
         ),
-      ),
-    );
-  }
+      );
 }

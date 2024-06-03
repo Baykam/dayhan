@@ -1,18 +1,25 @@
 package service
 
 import (
+	"dayhan/internal/client/dto"
+	"dayhan/internal/client/repository"
 	defaa "dayhan/internal/packages/default"
-	"dayhan/internal/product/dto"
-	"dayhan/internal/product/repository"
 )
 
 type ProductService struct {
-	repo repository.RepositoryInterface
+	repo      repository.RepositoryInterface
+	imageRepo repository.ImageRepositoryInterface
+	userRepo  repository.UserRepositoryInterface
 }
 
-func NewProductService(repo repository.RepositoryInterface) ProductServiceInterface {
+func NewProductService(repo repository.RepositoryInterface,
+	imageRepo repository.ImageRepositoryInterface,
+	userRepo repository.UserRepositoryInterface,
+) ProductServiceInterface {
 	return &ProductService{
-		repo: repo,
+		repo:      repo,
+		imageRepo: imageRepo,
+		userRepo:  userRepo,
 	}
 }
 
@@ -34,7 +41,7 @@ func (p *ProductService) GetProductList() (*[]dto.ProductRes, error) {
 }
 
 func (p *ProductService) SearchByName(query, userId string) (*[]dto.ProductRes, error) {
-	_, err := p.repo.GetUserByUserID(userId)
+	_, err := p.userRepo.GetUserByUserID(userId)
 	if err != nil {
 		return nil, defaa.ErrBadRequest
 	}
@@ -47,7 +54,7 @@ func (p *ProductService) SearchByName(query, userId string) (*[]dto.ProductRes, 
 }
 
 func (p *ProductService) CreateProduct(req *dto.ProductCreateReq, userId string) (*dto.ProductRes, error) {
-	user, err := p.repo.GetUserByUserID(userId)
+	user, err := p.userRepo.GetUserByUserID(userId)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +72,7 @@ func (p *ProductService) CreateProduct(req *dto.ProductCreateReq, userId string)
 }
 
 func (p *ProductService) GetProductById(userId string, productId int64) (*dto.ProductRes, error) {
-	user, err := p.repo.GetUserByUserID(userId)
+	user, err := p.userRepo.GetUserByUserID(userId)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +85,7 @@ func (p *ProductService) GetProductById(userId string, productId int64) (*dto.Pr
 }
 
 func (p *ProductService) DeleteProductById(userId string, id int64) error {
-	user, err := p.repo.GetUserByUserID(userId)
+	user, err := p.userRepo.GetUserByUserID(userId)
 	if err != nil {
 		return err
 	}
@@ -90,7 +97,7 @@ func (p *ProductService) DeleteProductById(userId string, id int64) error {
 }
 
 func (p *ProductService) UpdateProductById(userId string, id int64, req dto.ProductCreateReq) (*dto.ProductRes, error) {
-	user, err := p.repo.GetUserByUserID(userId)
+	user, err := p.userRepo.GetUserByUserID(userId)
 	if err != nil {
 		return nil, err
 	}

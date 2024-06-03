@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_function_return_type
+
 import 'dart:convert';
 
 import 'package:dayhan_mobile/src/infrastructure/index.dart';
@@ -14,27 +16,20 @@ final class NetworkManager {
   /// get function with http package
   Future<http.Response> get({
     required String url,
-    Function? returnFunc,
-    bool? needHeader,
-    bool? baseUrl,
+    Function()? returnFunc,
   }) async {
     final token =
         await CacheManager.shared.getString(CachePaths.accessKey.path);
     final headers = {
       'Authorization': token ?? '',
+      "Content-Type": "application/json",
     };
 
-    var uri = '';
-
-    if (baseUrl ?? false) {
-      uri = '${Api.localHost.url}auth/$url';
-    } else {
-      uri = '${Api.localHost.url}api/v1/$url';
-    }
+    final uri = '${Api.localHost.url}api/v1/$url';
 
     final res = await http.get(
       Uri.parse(uri),
-      headers: needHeader ?? false ? headers : null,
+      headers: headers,
     );
     if (res.statusCode == 401) {
       await RefreshToken().refreshToken(token: token ?? '');
@@ -47,29 +42,22 @@ final class NetworkManager {
   /// post function with http package
   Future<http.Response> post({
     required String url,
-    Function? returnFunc,
+    Function()? returnFunc,
     Object? body,
-    bool? needHeader,
-    bool? baseUrl,
   }) async {
     final token =
         await CacheManager.shared.getString(CachePaths.accessKey.path);
     final headers = {
       'Authorization': token ?? '',
+      "Content-Type": "application/json",
     };
 
-    var uri = '';
-
-    if (baseUrl ?? false) {
-      uri = '${Api.localHost.url}$url';
-    } else {
-      uri = '${Api.localHost.url}api/v1/$url';
-    }
+    final uri = '${Api.localHost.url}api/v1/$url';
 
     final res = await http.post(
       Uri.parse(uri),
       body: jsonEncode(body),
-      headers: needHeader ?? false ? headers : null,
+      headers: headers,
     );
     if (res.statusCode == 401) {
       await RefreshToken().refreshToken(token: token ?? '');
@@ -82,7 +70,7 @@ final class NetworkManager {
   /// put function with http package
   Future<http.Response> put({
     required String url,
-    Function? returnFunc,
+    Function()? returnFunc,
     Object? body,
     bool? needHeader,
     bool? baseUrl,
@@ -91,20 +79,41 @@ final class NetworkManager {
         await CacheManager.shared.getString(CachePaths.accessKey.path);
     final headers = {
       'Authorization': token ?? '',
+      "Content-Type": "application/json",
     };
 
-    var uri = '';
-
-    if (baseUrl ?? false) {
-      uri = '${Api.localHost.url}$url';
-    } else {
-      uri = '${Api.localHost.url}api/v1/$url';
-    }
+    final uri = '${Api.localHost.url}api/v1/$url';
 
     final res = await http.put(
       Uri.parse(uri),
       body: jsonEncode(body),
-      headers: needHeader ?? false ? headers : null,
+      headers: headers,
+    );
+    if (res.statusCode == 401) {
+      await RefreshToken().refreshToken(token: token ?? '');
+      returnFunc?.call();
+    }
+
+    return res;
+  }
+
+  /// delete function with http package
+  Future<http.Response> delete({
+    required String url,
+    Function()? returnFunc,
+  }) async {
+    final token =
+        await CacheManager.shared.getString(CachePaths.accessKey.path);
+    final headers = {
+      'Authorization': token ?? '',
+      "Content-Type": "application/json",
+    };
+
+    final uri = '${Api.localHost.url}api/v1/$url';
+
+    final res = await http.delete(
+      Uri.parse(uri),
+      headers: headers,
     );
     if (res.statusCode == 401) {
       await RefreshToken().refreshToken(token: token ?? '');

@@ -1,6 +1,7 @@
 import 'package:dayhan_mobile/app/router/observer.dart';
 import 'package:dayhan_mobile/app/router/path.dart';
 import 'package:dayhan_mobile/src/infrastructure/index.dart';
+import 'package:dayhan_mobile/src/src/pages/add_product/add_product.dart';
 import 'package:dayhan_mobile/src/src/pages/auth/auth.dart';
 import 'package:dayhan_mobile/src/src/pages/error/error.dart';
 import 'package:dayhan_mobile/src/src/pages/navbar/navbar.dart';
@@ -36,6 +37,7 @@ final class ProductRouter {
       }
       return null;
     },
+    debugLogDiagnostics: true,
     routes: [
       auth,
       GoRoute(
@@ -65,5 +67,11 @@ final class ProductRouter {
             builder: (context, state) => const Otp(),
           ),
         ],
+      );
+
+  static GoRoute get addProduct => GoRoute(
+        path: RoutePath.addProduct.path,
+        name: RoutePath.addProduct.name,
+        builder: (context, state) => const AddProduct(),
       );
 }

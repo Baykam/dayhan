@@ -24,7 +24,11 @@ final class StateInitializer extends StatelessWidget {
             ..add(const SettingsEvent.defaultLocale()),
         ),
 
+        ///data create or update default state's
+        BlocProvider(create: (context) => ProductReqBloc()),
+
         /// data transfer states
+        BlocProvider(create: (context) => GetProductListBloc()),
       ],
       child: child,
     );

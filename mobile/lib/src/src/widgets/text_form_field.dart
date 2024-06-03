@@ -2,9 +2,11 @@ import 'package:dayhan_mobile/src/src/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// project text form field widget
 final class ProductTextFormFiled extends StatefulWidget {
+  ///
   const ProductTextFormFiled({
-    Key? key,
+    super.key,
     required this.hinttext,
     this.needSuffixIcon,
     this.controller,
@@ -20,12 +22,12 @@ final class ProductTextFormFiled extends StatefulWidget {
     this.textInputType,
     this.inputFormatters,
     this.backGroundColor,
-  }) : super(key: key);
+  });
 
   final String hinttext;
   final bool? needSuffixIcon;
   final TextEditingController? controller;
-  final Function(String)? onChanged;
+  final void Function(String)? onChanged;
   final TextStyle? textStyle;
   final double? padding;
   final String? validateText;

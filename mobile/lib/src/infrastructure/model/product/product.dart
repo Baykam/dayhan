@@ -12,7 +12,7 @@ class Product with _$Product {
     int? id,
     String? name,
     String? description,
-    String? price,
+    double? price,
   }) = _Product;
 
   /// fromJson function

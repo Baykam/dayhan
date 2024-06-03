@@ -4,6 +4,7 @@ enum ProductIcons {
   home(icon: Icons.home),
   settings(icon: Icons.settings),
   search(icon: Icons.search),
+  add(icon: Icons.add),
   ;
 
   final IconData icon;

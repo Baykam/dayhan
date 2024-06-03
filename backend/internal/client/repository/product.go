@@ -2,8 +2,8 @@ package repository
 
 import (
 	"database/sql"
-	"dayhan/internal/product/dto"
-	"dayhan/internal/product/model"
+	"dayhan/internal/client/dto"
+	"dayhan/internal/client/model"
 	"fmt"
 )
 
@@ -20,7 +20,6 @@ func NewRepository(db *sql.DB) RepositoryInterface {
 type RepositoryInterface interface {
 	GetProductList() (*[]dto.ProductRes, error)
 	SearchByName(query string) (*[]dto.ProductRes, error)
-	GetUserByUserID(userId string) (*model.User, error)
 	CreateProduct(req *dto.ProductCreateReq, userId int64) (int64, error)
 	GetProductById(id, userId int64) (*dto.ProductRes, error)
 	GetProductByIdFullModel(id int64) (*model.Product, error)

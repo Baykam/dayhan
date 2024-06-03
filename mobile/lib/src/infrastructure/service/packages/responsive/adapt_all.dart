@@ -9,8 +9,12 @@ final class AdaptAllView extends StatelessWidget {
     required this.phone,
     required this.tablet,
     required this.desktop,
+    this.adaptWidth = false,
     super.key,
   });
+
+  /// is the bool == false [double.infinity]
+  final bool adaptWidth;
 
   /// Define your custom widget for mobile
   final Widget phone;
@@ -23,9 +27,33 @@ final class AdaptAllView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (ResponsiveBreakpoints.of(context).isMobile) return phone;
-    if (ResponsiveBreakpoints.of(context).isTablet) return tablet;
-    if (ResponsiveBreakpoints.of(context).isDesktop) return desktop;
+    if (ResponsiveBreakpoints.of(context).isMobile) {
+      if(adaptWidth) {
+        return SizedBox(
+          width: MediaQuery.sizeOf(context).width,
+          child: phone,
+        );
+      }
+      return phone;
+    }
+    if (ResponsiveBreakpoints.of(context).isTablet) {
+      if(adaptWidth){
+        return SizedBox(
+          width: MediaQuery.sizeOf(context).width,
+          child: tablet,
+        );
+      }
+      return tablet;
+    }
+    if (ResponsiveBreakpoints.of(context).isDesktop) {
+      if(adaptWidth){
+        return SizedBox(
+          width: MediaQuery.sizeOf(context).width - 80,
+          child: desktop,
+        );
+      }
+      return desktop;
+    }
 
     return desktop;
   }

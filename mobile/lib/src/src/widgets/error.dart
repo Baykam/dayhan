@@ -2,24 +2,23 @@ import 'package:dayhan_mobile/src/src/utils/index.dart';
 import 'package:flutter/material.dart';
 
 final class ProductErrorWidget extends StatelessWidget {
-  const ProductErrorWidget({super.key, this.error});
-  final String? error;
+  const ProductErrorWidget({super.key, required this.error});
+  final String error;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 200,
-            child: Assets.lottie.errorLottie.lottie(),
-          ),
-          Text(
-            error ?? '',
-            style: ProductTextStyle.i.t12,
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Assets.lottie.errorLottie.lottie(
+          height: 200,
+          width: 200,
+          fit: BoxFit.cover,
+        ),
+        Text(
+          error,
+          style: ProductTextStyle.i.t12,
+        ),
+      ],
     );
   }
 }

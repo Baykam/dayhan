@@ -2,10 +2,10 @@ package http
 
 import (
 	"database/sql"
+	"dayhan/internal/client/dto"
+	"dayhan/internal/client/service"
 	defaa "dayhan/internal/packages/default"
 	"dayhan/internal/packages/utils"
-	"dayhan/internal/product/dto"
-	"dayhan/internal/product/service"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -18,7 +18,8 @@ type HttpPort struct {
 	service   service.ProductServiceInterface
 }
 
-func NewHttpPost(db *sql.DB, validator validation.Validation, service service.ProductServiceInterface) *HttpPort {
+func NewHttpPost(db *sql.DB, validator validation.Validation,
+	service service.ProductServiceInterface) *HttpPort {
 	return &HttpPort{
 		db:        db,
 		validator: validator,
@@ -28,28 +29,30 @@ func NewHttpPost(db *sql.DB, validator validation.Validation, service service.Pr
 
 func (h *HttpPort) GetProductList(c *gin.Context) {
 	u := c.GetString(defaa.SetUserId)
-
-	products, err := h.service.GetProductList()
-	if err != nil || u == "" {
-		utils.Error(c, 400, err.Error())
+	if u == "" {
+		utils.Error(c, 401, defaa.ErrUnAuthorized.Error())
 		return
+	}
+	var products *[]dto.ProductRes
+	query := c.Query("search")
+
+	if query == "" {
+		res, err := h.service.GetProductList()
+		if err != nil {
+			utils.Error(c, 400, err.Error())
+			return
+		}
+		products = res
+	} else {
+		res, err := h.service.SearchByName(query, u)
+		if err != nil {
+			utils.Error(c, 400, err.Error())
+			return
+		}
+		products = res
 	}
 
 	utils.Response(c, 200, products)
-}
-
-func (h *HttpPort) SearchByName(c *gin.Context) {
-	userId := c.GetString(defaa.SetUserId)
-
-	query := c.Query("query")
-
-	res, err := h.service.SearchByName(query, userId)
-	if err != nil {
-		utils.Error(c, 400, err.Error())
-		return
-	}
-
-	utils.Response(c, 200, res)
 }
 
 func (h *HttpPort) PostCreateProduct(c *gin.Context) {

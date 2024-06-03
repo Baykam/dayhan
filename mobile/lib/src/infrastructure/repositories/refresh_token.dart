@@ -22,9 +22,19 @@ final class RefreshToken {
     if (res.statusCode == 201) {
       final rr = jsonDecode(res.body) as Map<String, dynamic>;
       final tt = Token.fromJson(rr);
+      // await CacheManager.hive(CachePaths.accessKey.path).add<String>(
+      //   cache: tt.access_token ?? '',
+      //   key: CachePaths.accessKey.name,
+      // );
       await CacheManager.shared
           .setString(CachePaths.accessKey.path, tt.access_token ?? '');
     } else {
+      // await CacheManager.hive(CachePaths.accessKey.path).delete<String>(
+      //   key: CachePaths.accessKey.name,
+      // );
+      // await CacheManager.hive(CachePaths.refreshKey.path).delete<String>(
+      //   key: CachePaths.refreshKey.name,
+      // );
       await CacheManager.shared.setString(CachePaths.accessKey.path, '');
       await CacheManager.shared.setString(CachePaths.refreshKey.path, '');
       ProductRouter().key.currentContext?.goNamed(RoutePath.auth.path);

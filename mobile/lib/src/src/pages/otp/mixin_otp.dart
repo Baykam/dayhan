@@ -2,7 +2,7 @@ part of 'otp.dart';
 
 /// mixin for otp widget
 mixin MixinOtp on State<Otp> {
-  showOtp(BuildContext context);
+  Future<dynamic> showOtp(BuildContext context);
 
   void onTap() {
     final kk = context.read<PostPhoneBloc>().state.whenOrNull(
