@@ -12,7 +12,8 @@ type ProductService struct {
 	userRepo  repository.UserRepositoryInterface
 }
 
-func NewProductService(repo repository.RepositoryInterface,
+func NewProductService(
+	repo repository.RepositoryInterface,
 	imageRepo repository.ImageRepositoryInterface,
 	userRepo repository.UserRepositoryInterface,
 ) ProductServiceInterface {
@@ -30,6 +31,33 @@ type ProductServiceInterface interface {
 	GetProductById(userId string, productId int64) (*dto.ProductRes, error)
 	DeleteProductById(userId string, id int64) error
 	UpdateProductById(userId string, id int64, req dto.ProductCreateReq) (*dto.ProductRes, error)
+}
+
+func (p *ProductService) GetHomePage(userId string) (*dto.HomeResponse, error) {
+	_, err := p.userRepo.GetUserByUserID(userId)
+	if err != nil {
+		return nil, err
+	}
+	products, err := p.repo.GetProductList()
+	if err != nil {
+		return nil, err
+	}
+	var images []dto.ImageRes
+	for _, v := range *products {
+
+		image, err := p.imageRepo.GetImageList(int64(*v.Id))
+		if err != nil {
+			return nil, err
+		}
+		images = append(images, *image...)
+	}
+
+	response := dto.HomeResponse{
+		Banner:   &images,
+		Products: products,
+	}
+
+	return &response, nil
 }
 
 func (p *ProductService) GetProductList() (*[]dto.ProductRes, error) {

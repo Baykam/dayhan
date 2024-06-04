@@ -85,7 +85,8 @@ func (s Server) AuthRoutes(token token.TokenService) error {
 }
 
 func (s Server) MapRoutes(token token.TokenService) error {
-	v1 := s.engine.Group("/api/v1")
+	api := s.engine.Group("/api")
+	v1 := api.Group("/v1")
 	v1.Use(middleware.UserMiddleware(token))
 	productRoutes.Routes(v1, s.db, &s.validator)
 	return nil

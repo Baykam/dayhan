@@ -16,6 +16,6 @@ cd internal/packages/config/config.yaml
 localhost:6380
 <!-- postgres file -->
 postgresql://root:password@localhost:5433/dayhan_db?sslmode=disable
-<!-- 6. lastly you will run project -->
-<!-- cd ./cmd/main.go give the terminal here -->
-go run main.go
+<!-- 6. migrate sql up run this -->
+migrate -path <path_migration> -database "postgresql://root:password@localhost:5433/dayhan_db?sslmode=disable" -verbose up
+

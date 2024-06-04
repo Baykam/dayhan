@@ -22,24 +22,39 @@ type RepositoryInterface interface {
 	SearchByName(query string) (*[]dto.ProductRes, error)
 	CreateProduct(req *dto.ProductCreateReq, userId int64) (int64, error)
 	GetProductById(id, userId int64) (*dto.ProductRes, error)
-	GetProductByIdFullModel(id int64) (*model.Product, error)
 	DeleteProductById(id int64, userId int64) error
 	UpdateProductById(id int64, req dto.ProductCreateReq) (int64, error)
 }
 
 func (r *Repository) GetProductList() (*[]dto.ProductRes, error) {
 	var products []dto.ProductRes
-
-	rows, err := r.db.Query(`SELECT id, name, description, price FROM product`)
+	rows, err := r.db.Query(`
+	SELECT p.id, p.name, p.description, p.price,
+		   array_agg(i.url) AS images
+	FROM product p
+	LEFT JOIN images i ON p.id = i.product_id
+	GROUP BY p.id, p.name, p.description, p.price
+	ORDER BY p.updated_at
+`)
 	if err != nil {
 		return nil, err
 	}
 
 	for rows.Next() {
-		var pp dto.ProductRes
-		if err := rows.Scan(&pp.Id, &pp.Name, &pp.Description, &pp.Price); err != nil {
+		var (
+			pp        dto.ProductRes
+			imageURLs []string
+		)
+		if err := rows.Scan(&pp.Id, &pp.Name, &pp.Description, &pp.Price, &imageURLs); err != nil {
 			return nil, err
 		}
+
+		pp.Images = []dto.ImageRes{}
+		for _, url := range imageURLs {
+			imageRes := dto.ImageRes{URL: url}
+			pp.Images = append(pp.Images, imageRes)
+		}
+
 		products = append(products, pp)
 	}
 	return &products, nil
@@ -101,17 +116,6 @@ func (r *Repository) CreateProduct(req *dto.ProductCreateReq, userId int64) (int
 	}
 
 	return createdProductID, nil
-}
-
-func (r *Repository) GetProductByIdFullModel(id int64) (*model.Product, error) {
-	var product model.Product
-	query := fmt.Sprintf(`SELECT * FROM product WHERE id = '%v'`, id)
-	row := r.db.QueryRow(query)
-	if err := row.Scan(&product.ID, &product.CreatedAt, &product.DeletedAt, &product.Description,
-		&product.Name, &product.Price, &product.UpdatedAt, &product.UserID); err != nil {
-		return nil, err
-	}
-	return &product, nil
 }
 
 func (r *Repository) DeleteProductById(id int64, userId int64) error {
