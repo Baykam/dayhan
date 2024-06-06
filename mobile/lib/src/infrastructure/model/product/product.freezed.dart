@@ -21,9 +21,15 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Product {
   int? get id => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  int? get category_id => throw _privateConstructorUsedError;
   double? get price => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  int? get min_order_quantity => throw _privateConstructorUsedError;
+  double? get rate => throw _privateConstructorUsedError;
+  List<FileSend>? get images => throw _privateConstructorUsedError;
+  List<FileSend>? get videos => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +41,17 @@ abstract class $ProductCopyWith<$Res> {
   factory $ProductCopyWith(Product value, $Res Function(Product) then) =
       _$ProductCopyWithImpl<$Res, Product>;
   @useResult
-  $Res call({int? id, String? name, String? description, double? price});
+  $Res call(
+      {int? id,
+      String? title,
+      String? description,
+      int? category_id,
+      double? price,
+      String? name,
+      int? min_order_quantity,
+      double? rate,
+      List<FileSend>? images,
+      List<FileSend>? videos});
 }
 
 /// @nodoc
@@ -52,27 +68,57 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
+    Object? title = freezed,
     Object? description = freezed,
+    Object? category_id = freezed,
     Object? price = freezed,
+    Object? name = freezed,
+    Object? min_order_quantity = freezed,
+    Object? rate = freezed,
+    Object? images = freezed,
+    Object? videos = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      category_id: freezed == category_id
+          ? _value.category_id
+          : category_id // ignore: cast_nullable_to_non_nullable
+              as int?,
       price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as double?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      min_order_quantity: freezed == min_order_quantity
+          ? _value.min_order_quantity
+          : min_order_quantity // ignore: cast_nullable_to_non_nullable
+              as int?,
+      rate: freezed == rate
+          ? _value.rate
+          : rate // ignore: cast_nullable_to_non_nullable
+              as double?,
+      images: freezed == images
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<FileSend>?,
+      videos: freezed == videos
+          ? _value.videos
+          : videos // ignore: cast_nullable_to_non_nullable
+              as List<FileSend>?,
     ) as $Val);
   }
 }
@@ -84,7 +130,17 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       __$$ProductImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int? id, String? name, String? description, double? price});
+  $Res call(
+      {int? id,
+      String? title,
+      String? description,
+      int? category_id,
+      double? price,
+      String? name,
+      int? min_order_quantity,
+      double? rate,
+      List<FileSend>? images,
+      List<FileSend>? videos});
 }
 
 /// @nodoc
@@ -99,27 +155,57 @@ class __$$ProductImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
+    Object? title = freezed,
     Object? description = freezed,
+    Object? category_id = freezed,
     Object? price = freezed,
+    Object? name = freezed,
+    Object? min_order_quantity = freezed,
+    Object? rate = freezed,
+    Object? images = freezed,
+    Object? videos = freezed,
   }) {
     return _then(_$ProductImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      category_id: freezed == category_id
+          ? _value.category_id
+          : category_id // ignore: cast_nullable_to_non_nullable
+              as int?,
       price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as double?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      min_order_quantity: freezed == min_order_quantity
+          ? _value.min_order_quantity
+          : min_order_quantity // ignore: cast_nullable_to_non_nullable
+              as int?,
+      rate: freezed == rate
+          ? _value.rate
+          : rate // ignore: cast_nullable_to_non_nullable
+              as double?,
+      images: freezed == images
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<FileSend>?,
+      videos: freezed == videos
+          ? _value._videos
+          : videos // ignore: cast_nullable_to_non_nullable
+              as List<FileSend>?,
     ));
   }
 }
@@ -127,7 +213,19 @@ class __$$ProductImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ProductImpl implements _Product {
-  const _$ProductImpl({this.id, this.name, this.description, this.price});
+  const _$ProductImpl(
+      {this.id,
+      this.title,
+      this.description,
+      this.category_id,
+      this.price,
+      this.name,
+      this.min_order_quantity,
+      this.rate,
+      final List<FileSend>? images,
+      final List<FileSend>? videos})
+      : _images = images,
+        _videos = videos;
 
   factory _$ProductImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProductImplFromJson(json);
@@ -135,15 +233,42 @@ class _$ProductImpl implements _Product {
   @override
   final int? id;
   @override
-  final String? name;
+  final String? title;
   @override
   final String? description;
   @override
+  final int? category_id;
+  @override
   final double? price;
+  @override
+  final String? name;
+  @override
+  final int? min_order_quantity;
+  @override
+  final double? rate;
+  final List<FileSend>? _images;
+  @override
+  List<FileSend>? get images {
+    final value = _images;
+    if (value == null) return null;
+    if (_images is EqualUnmodifiableListView) return _images;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<FileSend>? _videos;
+  @override
+  List<FileSend>? get videos {
+    final value = _videos;
+    if (value == null) return null;
+    if (_videos is EqualUnmodifiableListView) return _videos;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, description: $description, price: $price)';
+    return 'Product(id: $id, title: $title, description: $description, category_id: $category_id, price: $price, name: $name, min_order_quantity: $min_order_quantity, rate: $rate, images: $images, videos: $videos)';
   }
 
   @override
@@ -152,15 +277,34 @@ class _$ProductImpl implements _Product {
         (other.runtimeType == runtimeType &&
             other is _$ProductImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.price, price) || other.price == price));
+            (identical(other.category_id, category_id) ||
+                other.category_id == category_id) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.min_order_quantity, min_order_quantity) ||
+                other.min_order_quantity == min_order_quantity) &&
+            (identical(other.rate, rate) || other.rate == rate) &&
+            const DeepCollectionEquality().equals(other._images, _images) &&
+            const DeepCollectionEquality().equals(other._videos, _videos));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, description, price);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      description,
+      category_id,
+      price,
+      name,
+      min_order_quantity,
+      rate,
+      const DeepCollectionEquality().hash(_images),
+      const DeepCollectionEquality().hash(_videos));
 
   @JsonKey(ignore: true)
   @override
@@ -179,20 +323,38 @@ class _$ProductImpl implements _Product {
 abstract class _Product implements Product {
   const factory _Product(
       {final int? id,
-      final String? name,
+      final String? title,
       final String? description,
-      final double? price}) = _$ProductImpl;
+      final int? category_id,
+      final double? price,
+      final String? name,
+      final int? min_order_quantity,
+      final double? rate,
+      final List<FileSend>? images,
+      final List<FileSend>? videos}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
 
   @override
   int? get id;
   @override
-  String? get name;
+  String? get title;
   @override
   String? get description;
   @override
+  int? get category_id;
+  @override
   double? get price;
+  @override
+  String? get name;
+  @override
+  int? get min_order_quantity;
+  @override
+  double? get rate;
+  @override
+  List<FileSend>? get images;
+  @override
+  List<FileSend>? get videos;
   @override
   @JsonKey(ignore: true)
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:dayhan_mobile/src/application/index.dart';
 import 'package:dayhan_mobile/src/infrastructure/index.dart';
 import 'package:dayhan_mobile/src/src/utils/index.dart';
 import 'package:dayhan_mobile/src/src/widgets/index.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -51,6 +54,73 @@ class _AddProductState extends State<AddProduct> with MixinAddProduct {
                     .read<ProductReqBloc>()
                     .add(ProductReqEvent.price(price: double.tryParse(v) ?? 0));
               },
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  height: 50,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: imagePaths.length,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: Image.file(
+                            imagePaths[index],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                FloatingActionButton(
+                  onPressed: imagePick,
+                  child: ProductIcons.add.toIcon(),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  height: 50,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: videoFiles.length,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: SizedBox(
+                          height: 150,
+                          width: 150,
+                          child:
+                              ProductFileVideoPlayer(file: videoFiles[index]),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                FloatingActionButton(
+                  onPressed: videoPick,
+                  child: ProductIcons.add.toIcon(),
+                ),
+              ],
             ),
           ],
         ),

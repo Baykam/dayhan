@@ -52,9 +52,11 @@ final class ApplicationInitialize {
   ///initialize method for app when starting
   Future<void> _initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: ProductColor.i.transParent,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: ProductColor.i.transParent,
+      ),
+    );
 
     ///Firebase application integration
     {}
@@ -64,12 +66,10 @@ final class ApplicationInitialize {
       await SharedPreferences.getInstance();
       final as = await getApplicationCacheDirectory();
       await Hive.initFlutter(as.path);
-
-      // await Hive.openBox<String>(CachePaths.accessKey.path);
-      // await Hive.openBox<String>(CachePaths.refreshKey.path);
     }
 
     await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+    );
   }
 }

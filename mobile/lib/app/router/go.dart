@@ -44,6 +44,10 @@ final class ProductRouter {
         path: RoutePath.navbar.path,
         name: RoutePath.navbar.name,
         builder: (context, state) => const Navbar(),
+        routes: [
+          addProduct,
+
+        ],
       ),
     ],
   );

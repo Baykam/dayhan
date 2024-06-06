@@ -27,14 +27,6 @@ final class PostToken implements IPostToken {
     final p = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
     if (res.statusCode == 201) {
       final r = Token.fromJson(p);
-      // await CacheManager.hive(CachePaths.accessKey.path).add<String>(
-      //   cache: r.access_token ?? '',
-      //   key: CachePaths.accessKey.name,
-      // );
-      // await CacheManager.hive(CachePaths.refreshKey.path).add<String>(
-      //   cache: r.refresh_token ?? '',
-      //   key: CachePaths.refreshKey.name,
-      // );
       await CacheManager.shared
           .setString(CachePaths.accessKey.path, r.access_token ?? '');
       await CacheManager.shared

@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS "users" (
   id SERIAL PRIMARY KEY,
   user_id VARCHAR(255) NOT NULL UNIQUE,
-  name VARCHAR(255) NOT NULL,
+  name VARCHAR(255),
   --which supplier (manufacturer, supplier, user)--,
-  supplier INTEGER NOT NULL,
-  phone VARCHAR(100),
+  supplier INTEGER,
+  phone VARCHAR(100) NOT NULL,
   email VARCHAR(100),
   location TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -21,11 +21,11 @@ CREATE TABLE IF NOT EXISTS categories (
 
 CREATE TABLE IF NOT EXISTS "product" (
   id SERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
+  title VARCHAR(255),
   description TEXT,
   category_id INTEGER REFERENCES categories(id),
-  price DECIMAL(10,2) NOT NULL,
-  user_id INTEGER REFERENCES "users"(id),
+  price DECIMAL(10,2),
+  user_id INTEGER REFERENCES "users"(id) NOT NULL,
   name VARCHAR(255),
   min_order_quantity INTEGER,
   rate DECIMAL(10,2),

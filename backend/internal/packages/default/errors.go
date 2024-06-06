@@ -12,8 +12,9 @@ var (
 	ErrPhoneNotValid   = errors.New("phone not valid")
 	ErrNoDataHasUserId = errors.New("no data found with that id")
 	ErrGenerateUid     = errors.New("generate uid is not true")
-
-	ErrBadRequest = errors.New("bad request")
+	ErrLimit           = errors.New("limit not true")
+	ErrOffset          = errors.New("offset not true")
+	ErrBadRequest      = errors.New("bad request")
 
 	DataHasDeleted = "Data has deleted"
 )

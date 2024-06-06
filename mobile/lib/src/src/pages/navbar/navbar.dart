@@ -41,9 +41,9 @@ class _NavbarState extends State<Navbar> with MixinNavBar {
             _nav(ProductIcons.settings.icon, 'settings'),
           ],
         ),
-        floatingActionButton: IconButton(
+        floatingActionButton: FloatingActionButton(
           onPressed: goAddProduct,
-          icon: ProductIcons.add.toIcon(),
+          child: ProductIcons.add.toIcon(),
         ),
       ),
     );

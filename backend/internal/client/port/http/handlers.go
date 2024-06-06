@@ -57,7 +57,7 @@ func (h *HttpPort) GetProductList(c *gin.Context) {
 
 func (h *HttpPort) PostCreateProduct(c *gin.Context) {
 	userID := c.GetString(defaa.SetUserId)
-	var req dto.ProductCreateReq
+	var req dto.ProductCreateRequest
 	err := c.BindJSON(&req)
 	if err != nil || userID == "" {
 		utils.Error(c, 400, defaa.ErrInvalidData.Error())

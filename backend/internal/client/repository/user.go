@@ -24,9 +24,16 @@ func (r *UserRepository) GetUserByUserID(userId string) (*dto.User, error) {
 	var user dto.User
 	query := fmt.Sprintf(`SELECT * FROM users WHERE user_id = '%s'`, userId)
 	row := r.db.QueryRow(query)
-	err := row.Scan(&user.ID, &user.Email,
-		&user.UserID, &user.Phone, &user.Supplier,
-		&user.Location, &user.Name,
+	err := row.Scan(
+		&user.ID,
+		&user.UserID,
+		&user.Name,
+		&user.Supplier,
+		&user.Phone,
+		&user.Email,
+		&user.Location,
+		&user.CreatedAt,
+		&user.UpdatedAt,
 	)
 	if err == sql.ErrNoRows || err != nil {
 		return nil, err

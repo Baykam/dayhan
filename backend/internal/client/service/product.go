@@ -4,6 +4,7 @@ import (
 	"dayhan/internal/client/dto"
 	"dayhan/internal/client/repository"
 	defaa "dayhan/internal/packages/default"
+	"dayhan/internal/packages/file"
 )
 
 type ProductService struct {
@@ -27,7 +28,7 @@ func NewProductService(
 type ProductServiceInterface interface {
 	GetProductList() (*[]dto.ProductRes, error)
 	SearchByName(query, userId string) (*[]dto.ProductRes, error)
-	CreateProduct(req *dto.ProductCreateReq, userId string) (*dto.ProductRes, error)
+	CreateProduct(req *dto.ProductCreateRequest, userId string) (*dto.ProductRes, error)
 	GetProductById(userId string, productId int64) (*dto.ProductRes, error)
 	DeleteProductById(userId string, id int64) error
 	UpdateProductById(userId string, id int64, req dto.ProductCreateReq) (*dto.ProductRes, error)
@@ -43,15 +44,6 @@ func (p *ProductService) GetHomePage(userId string) (*dto.HomeResponse, error) {
 		return nil, err
 	}
 	var images []dto.ImageRes
-	for _, v := range *products {
-
-		image, err := p.imageRepo.GetImageList(int64(*v.Id))
-		if err != nil {
-			return nil, err
-		}
-		images = append(images, *image...)
-	}
-
 	response := dto.HomeResponse{
 		Banner:   &images,
 		Products: products,
@@ -81,7 +73,7 @@ func (p *ProductService) SearchByName(query, userId string) (*[]dto.ProductRes, 
 	return products, nil
 }
 
-func (p *ProductService) CreateProduct(req *dto.ProductCreateReq, userId string) (*dto.ProductRes, error) {
+func (p *ProductService) CreateProduct(req *dto.ProductCreateRequest, userId string) (*dto.ProductRes, error) {
 	user, err := p.userRepo.GetUserByUserID(userId)
 	if err != nil {
 		return nil, err
@@ -90,6 +82,17 @@ func (p *ProductService) CreateProduct(req *dto.ProductCreateReq, userId string)
 	productId, err := p.repo.CreateProduct(req, user.ID)
 	if err != nil {
 		return nil, err
+	}
+
+	for _, v := range *req.Images {
+		path, err := file.FileDecodeFromByte(*v.Url, *v.Name)
+		if err != nil {
+			return nil, err
+		}
+		imageId, err := p.imageRepo.CreateImage(productId, path)
+		if err != nil || imageId == 0 {
+			return nil, err
+		}
 	}
 
 	product, err := p.repo.GetProductById(productId, user.ID)

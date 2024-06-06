@@ -29,6 +29,7 @@ final class StateInitializer extends StatelessWidget {
 
         /// data transfer states
         BlocProvider(create: (context) => GetProductListBloc()),
+        BlocProvider(create: (context) => PostProductBloc()),
       ],
       child: child,
     );

@@ -3,7 +3,6 @@ package repository
 import (
 	"database/sql"
 	"dayhan/internal/client/dto"
-	"dayhan/internal/client/model"
 	"fmt"
 )
 
@@ -20,7 +19,7 @@ func NewRepository(db *sql.DB) RepositoryInterface {
 type RepositoryInterface interface {
 	GetProductList() (*[]dto.ProductRes, error)
 	SearchByName(query string) (*[]dto.ProductRes, error)
-	CreateProduct(req *dto.ProductCreateReq, userId int64) (int64, error)
+	CreateProduct(req *dto.ProductCreateRequest, userId int64) (int64, error)
 	GetProductById(id, userId int64) (*dto.ProductRes, error)
 	DeleteProductById(id int64, userId int64) error
 	UpdateProductById(id int64, req dto.ProductCreateReq) (int64, error)
@@ -80,7 +79,15 @@ func (r *Repository) SearchByName(query string) (*[]dto.ProductRes, error) {
 
 func (r *Repository) GetProductById(id, userId int64) (*dto.ProductRes, error) {
 	var p dto.ProductRes
-	query := fmt.Sprintf(`SELECT id,name,description, price FROM product WHERE id = '%v' AND user_id = '%v'`, id, userId)
+	query := fmt.Sprintf(`
+	SELECT p.id ,p.name,p.description, p.price, array_agg(i.url) as images, p.updated_at
+	FROM product p
+	LEFT JOIN images i ON p.id = i.product_id
+	WHERE id = '%v' AND user_id = '%v'
+	GROUP BY p.id, p.name, p.description, p.price, p.updated_at 
+	ORDER BY updated_at
+    `, id, userId,
+	)
 	row := r.db.QueryRow(query)
 	err := row.Scan(&p.Id, &p.Name, &p.Description, &p.Price)
 	if err != nil {
@@ -89,18 +96,7 @@ func (r *Repository) GetProductById(id, userId int64) (*dto.ProductRes, error) {
 	return &p, nil
 }
 
-func (r *Repository) GetUserByUserID(userId string) (*model.User, error) {
-	var user model.User
-	query := fmt.Sprintf(`SELECT * FROM users WHERE user_id = '%s'`, userId)
-	row := r.db.QueryRow(query)
-	err := row.Scan(&user.ID, &user.CreatedAt, &user.UpdatedAt, &user.Email, &user.UserID, &user.Phone)
-	if err == sql.ErrNoRows || err != nil || userId != user.UserID {
-		return nil, err
-	}
-	return &user, nil
-}
-
-func (r *Repository) CreateProduct(req *dto.ProductCreateReq, userId int64) (int64, error) {
+func (r *Repository) CreateProduct(req *dto.ProductCreateRequest, userId int64) (int64, error) {
 	query := `INSERT INTO product(name, description, price, user_id) VALUES ($1, $2, $3, $4) RETURNING id`
 	stmt, err := r.db.Prepare(query)
 	if err != nil {
@@ -110,7 +106,7 @@ func (r *Repository) CreateProduct(req *dto.ProductCreateReq, userId int64) (int
 
 	var createdProductID int64
 
-	err = stmt.QueryRow(req.Name, req.Description, req.Price, userId).Scan(&createdProductID) // Execute and scan the ID
+	err = stmt.QueryRow(req.Name, req.Description, req.Price, userId).Scan(&createdProductID)
 	if err != nil {
 		return 0, err
 	}
