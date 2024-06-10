@@ -23,7 +23,7 @@ type ImageRepositoryInterface interface {
 func (r *ImageRepository) GetImageList(productId int64) (*[]dto.ImageRes, error) {
 	var products []dto.ImageRes
 
-	rows, err := r.db.Query(`SELECT url FROM images WHERE product_id = %v`, productId)
+	rows, err := r.db.Query(`SELECT url FROM images WHERE product_id = $1`, productId)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (r *ImageRepository) CreateImage(productId int64, imagePath string) (int64,
 
 	var createdProductID int64
 
-	err = stmt.QueryRow(imagePath, productId).Scan(&createdProductID) // Execute and scan the ID
+	err = stmt.QueryRow(imagePath, productId).Scan(&createdProductID)
 	if err != nil {
 		return 0, err
 	}

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dayhan_mobile/src/infrastructure/index.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 final class ProductFilePickerFuncs {
   Future<List<PlatformFile>?> pickMediaFile({
@@ -39,8 +40,8 @@ final class ProductFilePickerFuncs {
   Future<List<FileSend>> fileConvertToString(List<File> files) async {
     final base64EncodedFiles = await Future.wait(
       files.map((file) async {
-        final name = file.path;
-        final url = base64Encode(file.readAsBytesSync());
+        final name = p.basename(file.path);
+        final url = base64Encode(await file.readAsBytes());
         return FileSend(name: name, url: url);
       }),
     );

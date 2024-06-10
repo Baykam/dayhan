@@ -1,8 +1,9 @@
 environment: production
 http_port: 9999
-host: "127.0.0.3"
+host: 192.168.1.184
+# host: "127.0.0.3"
 # for web cors port number
-chrome_port: 50514
+# chrome_port: 45972
 
 db_url: postgresql://root:password@localhost:5433/dayhan_db?sslmode=disable
 

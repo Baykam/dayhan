@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 final class PostPhone implements IPostPhone {
   @override
   Future<Either<Error, Verifykey>> postPhone({required String phone}) async {
-    final url = '${Api.localHost.url}auth';
+    final url = '${Api.localHostWifi.url}auth';
     final headers = {"Content-Type": "application/json"};
 
     final res = await http.post(Uri.parse(url),

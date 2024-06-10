@@ -18,7 +18,7 @@ final class PostProduct implements IPostProduct {
     );
 
     final w = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
-    if (res.statusCode == 200) {
+    if (res.statusCode == 201) {
       final r = Product.fromJson(w);
       return right(r);
     } else {

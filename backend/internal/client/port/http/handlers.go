@@ -95,7 +95,7 @@ func (h *HttpPort) GetProductById(c *gin.Context) {
 
 func (h *HttpPort) DeleteProduct(c *gin.Context) {
 	userId := c.GetString(defaa.SetUserId)
-	productId := c.Query("id")
+	productId := c.Param("id")
 
 	pId, err := strconv.Atoi(productId)
 	if err != nil {
@@ -123,13 +123,13 @@ func (h *HttpPort) UpdateProductById(c *gin.Context) {
 	var req dto.ProductCreateReq
 	err = c.BindJSON(&req)
 	if err != nil {
-		utils.Error(c, 400, defaa.ErrInvalidData.Error())
+		utils.Error(c, 400, err.Error())
 		return
 	}
 
 	result, err := h.service.UpdateProductById(userId, int64(pId), req)
 	if err != nil {
-		utils.Error(c, 400, defaa.ErrInvalidData.Error())
+		utils.Error(c, 400, err.Error())
 		return
 	}
 

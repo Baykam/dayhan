@@ -3,7 +3,6 @@ package service
 import (
 	"dayhan/internal/client/dto"
 	"dayhan/internal/client/repository"
-	defaa "dayhan/internal/packages/default"
 	"dayhan/internal/packages/file"
 )
 
@@ -29,6 +28,7 @@ type ProductServiceInterface interface {
 	GetProductList() (*[]dto.ProductRes, error)
 	SearchByName(query, userId string) (*[]dto.ProductRes, error)
 	CreateProduct(req *dto.ProductCreateRequest, userId string) (*dto.ProductRes, error)
+	GetProductByIdAndUserId(userId string, productId int64) (*dto.ProductRes, error)
 	GetProductById(userId string, productId int64) (*dto.ProductRes, error)
 	DeleteProductById(userId string, id int64) error
 	UpdateProductById(userId string, id int64, req dto.ProductCreateReq) (*dto.ProductRes, error)
@@ -55,20 +55,30 @@ func (p *ProductService) GetHomePage(userId string) (*dto.HomeResponse, error) {
 func (p *ProductService) GetProductList() (*[]dto.ProductRes, error) {
 	products, err := p.repo.GetProductList()
 	if err != nil {
-		return nil, defaa.ErrBadRequest
+		return nil, err
+	}
+	for i, v := range *products {
+		imageList, err := p.imageRepo.GetImageList(int64(v.Id))
+		if err != nil {
+			return nil, err
+		}
+		(*products)[i].Images = append((*products)[i].Images, *imageList...)
 	}
 	return products, nil
 }
 
 func (p *ProductService) SearchByName(query, userId string) (*[]dto.ProductRes, error) {
-	_, err := p.userRepo.GetUserByUserID(userId)
-	if err != nil {
-		return nil, defaa.ErrBadRequest
-	}
-
 	products, err := p.repo.SearchByName(query)
 	if err != nil {
 		return nil, err
+	}
+
+	for i, v := range *products {
+		images, err := p.imageRepo.GetImageList(int64(v.Id))
+		if err != nil {
+			return nil, err
+		}
+		(*products)[i].Images = append((*products)[i].Images, *images...)
 	}
 	return products, nil
 }
@@ -95,7 +105,20 @@ func (p *ProductService) CreateProduct(req *dto.ProductCreateRequest, userId str
 		}
 	}
 
-	product, err := p.repo.GetProductById(productId, user.ID)
+	product, err := p.repo.GetProductByIdAndUserId(productId, user.ID)
+	if err != nil {
+		return nil, err
+	}
+	return product, nil
+}
+
+func (p *ProductService) GetProductByIdAndUserId(userId string, productId int64) (*dto.ProductRes, error) {
+	user, err := p.userRepo.GetUserByUserID(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	product, err := p.repo.GetProductByIdAndUserId(productId, user.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -103,12 +126,8 @@ func (p *ProductService) CreateProduct(req *dto.ProductCreateRequest, userId str
 }
 
 func (p *ProductService) GetProductById(userId string, productId int64) (*dto.ProductRes, error) {
-	user, err := p.userRepo.GetUserByUserID(userId)
-	if err != nil {
-		return nil, err
-	}
 
-	product, err := p.repo.GetProductById(productId, user.ID)
+	product, err := p.repo.GetProductById(productId)
 	if err != nil {
 		return nil, err
 	}
@@ -117,6 +136,10 @@ func (p *ProductService) GetProductById(userId string, productId int64) (*dto.Pr
 
 func (p *ProductService) DeleteProductById(userId string, id int64) error {
 	user, err := p.userRepo.GetUserByUserID(userId)
+	if err != nil {
+		return err
+	}
+	_, err = p.repo.GetProductByIdAndUserId(id, user.ID)
 	if err != nil {
 		return err
 	}
@@ -133,12 +156,17 @@ func (p *ProductService) UpdateProductById(userId string, id int64, req dto.Prod
 		return nil, err
 	}
 
+	_, err = p.repo.GetProductByIdAndUserId(id, user.ID)
+	if err != nil {
+		return nil, err
+	}
+
 	updatedId, err := p.repo.UpdateProductById(id, req)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := p.repo.GetProductById(updatedId, user.ID)
+	res, err := p.repo.GetProductByIdAndUserId(updatedId, user.ID)
 	if err != nil {
 		return nil, err
 	}

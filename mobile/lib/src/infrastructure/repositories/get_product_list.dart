@@ -18,9 +18,8 @@ final class GetProductList implements IGetProductList {
       returnFunc: getProductList,
     );
 
-    final p = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
     if (res.statusCode == 200) {
-      final w = p['results'] as List<dynamic>;
+      final w = jsonDecode(utf8.decode(res.bodyBytes)) as List<dynamic>;
       final r = w
           .map(
             (e) => Product.fromJson(e as Map<String, dynamic>),
@@ -28,6 +27,7 @@ final class GetProductList implements IGetProductList {
           .toList();
       return right(r);
     } else {
+      final p = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
       final l = Error.fromJson(p);
       return left(l);
     }

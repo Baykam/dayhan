@@ -25,7 +25,7 @@ final class NetworkManager {
       "Content-Type": "application/json",
     };
 
-    final uri = '${Api.localHost.url}api/v1/$url';
+    final uri = '${Api.localHostWifi.url}api/v1/$url';
 
     final res = await http.get(
       Uri.parse(uri),
@@ -52,7 +52,7 @@ final class NetworkManager {
       "Content-Type": "application/json",
     };
 
-    final uri = '${Api.localHost.url}api/v1/$url';
+    final uri = '${Api.localHostWifi.url}api/v1/$url';
 
     final res = await http.post(
       Uri.parse(uri),
@@ -82,7 +82,7 @@ final class NetworkManager {
       "Content-Type": "application/json",
     };
 
-    final uri = '${Api.localHost.url}api/v1/$url';
+    final uri = '${Api.localHostWifi.url}api/v1/$url';
 
     final res = await http.put(
       Uri.parse(uri),
@@ -109,7 +109,7 @@ final class NetworkManager {
       "Content-Type": "application/json",
     };
 
-    final uri = '${Api.localHost.url}api/v1/$url';
+    final uri = '${Api.localHostWifi.url}api/v1/$url';
 
     final res = await http.delete(
       Uri.parse(uri),

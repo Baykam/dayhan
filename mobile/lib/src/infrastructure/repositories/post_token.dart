@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 final class PostToken implements IPostToken {
   @override
   Future<Either<Error, Token>> postToken({required Verifykey key}) async {
-    final url = '${Api.localHost.url}auth/token';
+    final url = '${Api.localHostWifi.url}auth/token';
     final header = {
       "Content-Type": "application/json",
     };

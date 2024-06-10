@@ -105,7 +105,6 @@ class _AddProductState extends State<AddProduct> with MixinAddProduct {
                         borderRadius: BorderRadius.circular(20),
                         child: SizedBox(
                           height: 150,
-                          width: 150,
                           child:
                               ProductFileVideoPlayer(file: videoFiles[index]),
                         ),

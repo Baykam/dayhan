@@ -21,12 +21,9 @@ class _ProductFileVideoPlayerState extends State<ProductFileVideoPlayer> {
     initFunc();
   }
 
-  Future<void> initFunc() async {
-    // await getApplicationDocumentsDirectory();
+  Future<void> initFunc()  async {
     controller = VideoPlayerController.file(widget.file);
-    // controller.setLooping(true);
-    controller.initialize().then((_) => setState(() {}));
-    controller.play();
+    await controller.initialize().then((_) => setState(() {}));
   }
 
   @override

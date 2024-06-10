@@ -20,19 +20,17 @@ type RepositoryInterface interface {
 	GetProductList() (*[]dto.ProductRes, error)
 	SearchByName(query string) (*[]dto.ProductRes, error)
 	CreateProduct(req *dto.ProductCreateRequest, userId int64) (int64, error)
-	GetProductById(id, userId int64) (*dto.ProductRes, error)
+	GetProductByIdAndUserId(id, userId int64) (*dto.ProductRes, error)
 	DeleteProductById(id int64, userId int64) error
 	UpdateProductById(id int64, req dto.ProductCreateReq) (int64, error)
+	GetProductById(id int64) (*dto.ProductRes, error)
 }
 
 func (r *Repository) GetProductList() (*[]dto.ProductRes, error) {
 	var products []dto.ProductRes
 	rows, err := r.db.Query(`
-	SELECT p.id, p.name, p.description, p.price,
-		   array_agg(i.url) AS images
+	SELECT p.id, p.name, p.description, p.price, p.updated_at
 	FROM product p
-	LEFT JOIN images i ON p.id = i.product_id
-	GROUP BY p.id, p.name, p.description, p.price
 	ORDER BY p.updated_at
 `)
 	if err != nil {
@@ -41,17 +39,28 @@ func (r *Repository) GetProductList() (*[]dto.ProductRes, error) {
 
 	for rows.Next() {
 		var (
-			pp        dto.ProductRes
-			imageURLs []string
+			pp          dto.ProductRes
+			name        sql.NullString
+			description sql.NullString
+			price       sql.NullFloat64
 		)
-		if err := rows.Scan(&pp.Id, &pp.Name, &pp.Description, &pp.Price, &imageURLs); err != nil {
+
+		err := rows.Scan(&pp.Id, &name, &description, &price, &pp.UpdatedAt)
+		if err != nil {
 			return nil, err
 		}
 
-		pp.Images = []dto.ImageRes{}
-		for _, url := range imageURLs {
-			imageRes := dto.ImageRes{URL: url}
-			pp.Images = append(pp.Images, imageRes)
+		pp.Name = name.String
+		if !name.Valid {
+			pp.Name = ""
+		}
+		pp.Description = description.String
+		if !description.Valid {
+			pp.Description = ""
+		}
+		pp.Price = price.Float64
+		if !price.Valid {
+			pp.Price = 0.0
 		}
 
 		products = append(products, pp)
@@ -61,7 +70,7 @@ func (r *Repository) GetProductList() (*[]dto.ProductRes, error) {
 
 func (r *Repository) SearchByName(query string) (*[]dto.ProductRes, error) {
 	var products []dto.ProductRes
-	q := fmt.Sprintf(`SELECT id, name, description, price FROM product WHERE name = '%s'`, query)
+	q := fmt.Sprintf(`SELECT id, name, description, price, updated_at FROM product WHERE name LIKE '%%%s%%'`, query)
 	rows, err := r.db.Query(q)
 	if err != nil {
 		return nil, err
@@ -69,7 +78,7 @@ func (r *Repository) SearchByName(query string) (*[]dto.ProductRes, error) {
 
 	for rows.Next() {
 		var pp dto.ProductRes
-		if err := rows.Scan(&pp.Id, &pp.Name, &pp.Description, &pp.Price); err != nil {
+		if err := rows.Scan(&pp.Id, &pp.Name, &pp.Description, &pp.Price, &pp.UpdatedAt); err != nil {
 			return nil, err
 		}
 		products = append(products, pp)
@@ -77,22 +86,73 @@ func (r *Repository) SearchByName(query string) (*[]dto.ProductRes, error) {
 	return &products, nil
 }
 
-func (r *Repository) GetProductById(id, userId int64) (*dto.ProductRes, error) {
-	var p dto.ProductRes
+func (r *Repository) GetProductByIdAndUserId(id, userId int64) (*dto.ProductRes, error) {
+	var (
+		p           dto.ProductRes
+		name        sql.NullString
+		description sql.NullString
+		price       sql.NullFloat64
+	)
 	query := fmt.Sprintf(`
-	SELECT p.id ,p.name,p.description, p.price, array_agg(i.url) as images, p.updated_at
-	FROM product p
-	LEFT JOIN images i ON p.id = i.product_id
-	WHERE id = '%v' AND user_id = '%v'
-	GROUP BY p.id, p.name, p.description, p.price, p.updated_at 
-	ORDER BY updated_at
+	SELECT id, name, description, price, updated_at 
+    FROM product
+    WHERE id = '%v' AND user_id = '%v'
     `, id, userId,
 	)
 	row := r.db.QueryRow(query)
-	err := row.Scan(&p.Id, &p.Name, &p.Description, &p.Price)
+	err := row.Scan(&p.Id, &name, &description, &price, &p.UpdatedAt)
 	if err != nil {
 		return nil, err
 	}
+
+	p.Name = name.String
+	if !name.Valid {
+		p.Name = ""
+	}
+	p.Description = description.String
+	if !description.Valid {
+		p.Description = ""
+	}
+	p.Price = price.Float64
+	if !price.Valid {
+		p.Price = 0.0
+	}
+
+	return &p, nil
+}
+
+func (r *Repository) GetProductById(id int64) (*dto.ProductRes, error) {
+	var (
+		p           dto.ProductRes
+		name        sql.NullString
+		description sql.NullString
+		price       sql.NullFloat64
+	)
+	query := fmt.Sprintf(`
+	SELECT id, name, description, price, updated_at 
+    FROM product
+    WHERE id = '%v'
+    `, id,
+	)
+	row := r.db.QueryRow(query)
+	err := row.Scan(&p.Id, &name, &description, &price, &p.UpdatedAt)
+	if err != nil {
+		return nil, err
+	}
+
+	p.Name = name.String
+	if !name.Valid {
+		p.Name = ""
+	}
+	p.Description = description.String
+	if !description.Valid {
+		p.Description = ""
+	}
+	p.Price = price.Float64
+	if !price.Valid {
+		p.Price = 0.0
+	}
+
 	return &p, nil
 }
 
@@ -115,7 +175,7 @@ func (r *Repository) CreateProduct(req *dto.ProductCreateRequest, userId int64) 
 }
 
 func (r *Repository) DeleteProductById(id int64, userId int64) error {
-	query := fmt.Sprintf(`DELETE FROM product WHERE id = '%v', user_id = '%v'`, id, userId)
+	query := fmt.Sprintf(`DELETE FROM product WHERE id = '%v' AND user_id = '%v'`, id, userId)
 	_, err := r.db.Exec(query)
 	if err != nil {
 		return err
