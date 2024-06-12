@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS schema_migrations,banner,orders,images,product,categories,users;
+DROP TABLE IF EXISTS schema_migrations,banner,orders,images,videos,product,categories,users;

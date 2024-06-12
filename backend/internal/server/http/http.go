@@ -44,6 +44,7 @@ func (s Server) Run() error {
 
 	token := token.NewTokenService(*s.cfg)
 
+	// here cors for mobile project from ./dayhan/mobile for chrome,windows...
 	s.engine.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{fmt.Sprintf("http://localhost:%v", s.cfg.ChromePort)},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -52,7 +53,8 @@ func (s Server) Run() error {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-	// s.engine.Use(cors.Default())
+
+	s.engine.Static("/path", "./path")
 
 	if err := s.AuthRoutes(token); err != nil {
 		log.Fatalf("AuthRoutes Error: %v", err)
@@ -88,6 +90,6 @@ func (s Server) MapRoutes(token token.TokenService) error {
 	api := s.engine.Group("/api")
 	v1 := api.Group("/v1")
 	v1.Use(middleware.UserMiddleware(token))
-	productRoutes.Routes(v1, s.db, &s.validator)
+	productRoutes.Routes(v1, s.db, &s.validator, *s.cfg)
 	return nil
 }

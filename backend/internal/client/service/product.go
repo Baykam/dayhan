@@ -10,17 +10,20 @@ type ProductService struct {
 	repo      repository.RepositoryInterface
 	imageRepo repository.ImageRepositoryInterface
 	userRepo  repository.UserRepositoryInterface
+	videoRepo repository.VideoRepositoryInterface
 }
 
 func NewProductService(
 	repo repository.RepositoryInterface,
 	imageRepo repository.ImageRepositoryInterface,
 	userRepo repository.UserRepositoryInterface,
+	videoRepo repository.VideoRepositoryInterface,
 ) ProductServiceInterface {
 	return &ProductService{
 		repo:      repo,
 		imageRepo: imageRepo,
 		userRepo:  userRepo,
+		videoRepo: videoRepo,
 	}
 }
 
@@ -34,24 +37,6 @@ type ProductServiceInterface interface {
 	UpdateProductById(userId string, id int64, req dto.ProductCreateReq) (*dto.ProductRes, error)
 }
 
-func (p *ProductService) GetHomePage(userId string) (*dto.HomeResponse, error) {
-	_, err := p.userRepo.GetUserByUserID(userId)
-	if err != nil {
-		return nil, err
-	}
-	products, err := p.repo.GetProductList()
-	if err != nil {
-		return nil, err
-	}
-	var images []dto.ImageRes
-	response := dto.HomeResponse{
-		Banner:   &images,
-		Products: products,
-	}
-
-	return &response, nil
-}
-
 func (p *ProductService) GetProductList() (*[]dto.ProductRes, error) {
 	products, err := p.repo.GetProductList()
 	if err != nil {
@@ -62,7 +47,12 @@ func (p *ProductService) GetProductList() (*[]dto.ProductRes, error) {
 		if err != nil {
 			return nil, err
 		}
+		videos, err := p.videoRepo.GetVideoList(int64(v.Id))
+		if err != nil {
+			return nil, err
+		}
 		(*products)[i].Images = append((*products)[i].Images, *imageList...)
+		(*products)[i].Videos = append((*products)[i].Videos, *videos...)
 	}
 	return products, nil
 }
@@ -78,8 +68,14 @@ func (p *ProductService) SearchByName(query, userId string) (*[]dto.ProductRes, 
 		if err != nil {
 			return nil, err
 		}
+		videos, err := p.videoRepo.GetVideoList(int64(v.Id))
+		if err != nil {
+			return nil, err
+		}
 		(*products)[i].Images = append((*products)[i].Images, *images...)
+		(*products)[i].Videos = append((*products)[i].Videos, *videos...)
 	}
+
 	return products, nil
 }
 
@@ -95,12 +91,23 @@ func (p *ProductService) CreateProduct(req *dto.ProductCreateRequest, userId str
 	}
 
 	for _, v := range *req.Images {
-		path, err := file.FileDecodeFromByte(*v.Url, *v.Name)
+		path, err := file.FileDecodeFromByte(*v.Url, *v.Name, "image")
 		if err != nil {
 			return nil, err
 		}
 		imageId, err := p.imageRepo.CreateImage(productId, path)
 		if err != nil || imageId == 0 {
+			return nil, err
+		}
+	}
+
+	for _, v := range *req.Videos {
+		path, err := file.FileDecodeFromByte(*v.Url, *v.Name, "video")
+		if err != nil {
+			return nil, err
+		}
+		videoId, err := p.videoRepo.CreateVideo(productId, path)
+		if err != nil || videoId == 0 {
 			return nil, err
 		}
 	}
@@ -131,6 +138,16 @@ func (p *ProductService) GetProductById(userId string, productId int64) (*dto.Pr
 	if err != nil {
 		return nil, err
 	}
+	images, err := p.imageRepo.GetImageList(int64(product.Id))
+	if err != nil {
+		return nil, err
+	}
+	videos, err := p.videoRepo.GetVideoList(int64(product.Id))
+	if err != nil {
+		return nil, err
+	}
+	product.Images = append(product.Images, *images...)
+	product.Videos = append(product.Videos, *videos...)
 	return product, nil
 }
 

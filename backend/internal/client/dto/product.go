@@ -9,6 +9,7 @@ type ProductRes struct {
 	Price       float64    `json:"price"`
 	UpdatedAt   time.Time  `json:"updated_at"`
 	Images      []ImageRes `json:"images"`
+	Videos      []VideoRes `json:"videos"`
 }
 
 type ProductCreateReq struct {
@@ -44,5 +45,5 @@ type ProductCreateRequest struct {
 	MinOrderQuantity *int64      `json:"min_order_quantity"`
 	Rate             *float64    `json:"rate"`
 	Images           *[]ImageReq `json:"images"`
-	Videos           *[]ImageReq `json:"videos"`
+	Videos           *[]VideoReq `json:"videos"`
 }

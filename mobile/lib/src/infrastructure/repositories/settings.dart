@@ -23,9 +23,10 @@ final class Settings implements ISettings {
   @override
   Future<Locale> defaultLocale() async {
     final key = await CacheManager.shared.getString(CachePaths.localeKey.path);
-    if (key == null || key.isEmpty || key != ProductLocale.en.name) {
+    if (key == null || key.isEmpty) {
       return ProductLocale.en.locale;
     }
+    if (key == ProductLocale.en.name) return ProductLocale.en.locale;
     if (key == ProductLocale.ru.name) return ProductLocale.ru.locale;
     if (key == ProductLocale.tr.name) return ProductLocale.tr.locale;
     return ProductLocale.tm.locale;
@@ -34,7 +35,7 @@ final class Settings implements ISettings {
   @override
   Future<void> setLocale({required String value}) async {
     await CacheManager.shared.setString(
-      CachePaths.themeKey.path,
+      CachePaths.localeKey.path,
       value,
     );
   }

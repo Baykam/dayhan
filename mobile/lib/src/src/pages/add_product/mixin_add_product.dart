@@ -48,4 +48,20 @@ mixin MixinAddProduct on State<AddProduct> {
               .add(ProductReqEvent.videos(videos: value)),
         );
   }
+
+  void onChangeName(String v){
+    context
+        .read<ProductReqBloc>()
+        .add(ProductReqEvent.name(name: v));
+  }
+  void onChangeDescription(String v){
+    context
+        .read<ProductReqBloc>()
+        .add(ProductReqEvent.description(description: v));
+  }
+  void onChangePrice(String v){
+    context
+        .read<ProductReqBloc>()
+        .add(ProductReqEvent.price(price: double.tryParse(v) ?? 0));
+  }
 }

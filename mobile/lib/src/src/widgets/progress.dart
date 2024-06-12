@@ -9,7 +9,7 @@ final class ProductProgress extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Assets.lottie.loadingTime
-            .lottie(height: 150, width: 150, fit: BoxFit.cover),
+            .lottie(),
       ),
     );
   }

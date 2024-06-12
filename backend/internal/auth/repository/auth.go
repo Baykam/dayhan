@@ -68,3 +68,13 @@ func (d *Database) GetUserByUserId(userId string) (*model.User, error) {
 	}
 	return &user, nil
 }
+
+// func (d *Database) UpdateUser(req model.User, userId string) (int64, error) {
+
+// 	query := `UPDATE users SET name = ? , supplier = ? , phone = ? , email = ? , location = ? WHERE user_id = ? RETURNING id`
+// 	result, err := d.db.Exec(query, req.Name, req.Supplier, req.Phone, req.Email, req.Location, userId)
+// 	if err != nil {
+// 		return 0, err
+// 	}
+
+// }

@@ -5,6 +5,8 @@ enum ProductIcons {
   settings(icon: Icons.settings),
   search(icon: Icons.search),
   add(icon: Icons.add),
+  delete(icon: Icons.delete),
+  update(icon: Icons.update),
   ;
 
   final IconData icon;

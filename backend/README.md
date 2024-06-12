@@ -19,3 +19,8 @@ postgresql://root:password@localhost:5433/dayhan_db?sslmode=disable
 <!-- 6. migrate sql up run this -->
 migrate -path <path_migration> -database "postgresql://root:password@localhost:5433/dayhan_db?sslmode=disable" -verbose up
 
+
+
+<!-- 7. please update your config.yaml file from internal/packages/config/ -->
+
+<!-- 8. go run main.go    from cmd/ where main.go file's path -->

@@ -15,10 +15,8 @@ final class GetProductListBloc
       : _getProductList = GetProductList(),
         super(_Initial()) {
     on<_Started>(_onStarted);
-    on<_Search>(_onSearch);
   }
   final IGetProductList _getProductList;
-  final search = TextEditingController();
 
   Future<void> _onStarted(
       _Started event, Emitter<GetProductListState> emit) async {
@@ -26,21 +24,6 @@ final class GetProductListBloc
 
     try {
       final res = await _getProductList.getProductList();
-      res.fold(
-        (l) => emit(_Failed(m: l.error ?? '')),
-        (r) => emit(_Success(p: r)),
-      );
-    } catch (e) {
-      emit(_Failed(m: e.toString()));
-    }
-  }
-
-  Future<void> _onSearch(
-      _Search event, Emitter<GetProductListState> emit) async {
-    emit(const _Loading());
-
-    try {
-      final res = await _getProductList.getProductList(query: search.text);
       res.fold(
         (l) => emit(_Failed(m: l.error ?? '')),
         (r) => emit(_Success(p: r)),

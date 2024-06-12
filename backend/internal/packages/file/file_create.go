@@ -3,11 +3,12 @@ package file
 import (
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 )
 
-func FileDecodeFromByte(apiDataString string, fileName string) (string, error) {
+func FileDecodeFromByte(apiDataString, fileName, fileType string) (string, error) {
 	// Decode Base64 string
 	dataBytes, err := base64.StdEncoding.DecodeString(apiDataString)
 	if err != nil {
@@ -15,7 +16,8 @@ func FileDecodeFromByte(apiDataString string, fileName string) (string, error) {
 	}
 
 	// Create the necessary directories if they don't exist
-	filePath := filepath.Join("path/", fileName)
+	fileTypePath := fmt.Sprintf("path/%s/", fileType)
+	filePath := filepath.Join(fileTypePath, fileName)
 	dirPath := filepath.Dir(filePath)
 
 	err = os.MkdirAll(dirPath, 0755)

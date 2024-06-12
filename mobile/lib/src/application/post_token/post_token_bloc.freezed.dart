@@ -17,19 +17,20 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PostTokenEvent {
   Verifykey get key => throw _privateConstructorUsedError;
+  String get otpCode => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Verifykey key) postKey,
+    required TResult Function(Verifykey key, String otpCode) postKey,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Verifykey key)? postKey,
+    TResult? Function(Verifykey key, String otpCode)? postKey,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Verifykey key)? postKey,
+    TResult Function(Verifykey key, String otpCode)? postKey,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -61,7 +62,7 @@ abstract class $PostTokenEventCopyWith<$Res> {
           PostTokenEvent value, $Res Function(PostTokenEvent) then) =
       _$PostTokenEventCopyWithImpl<$Res, PostTokenEvent>;
   @useResult
-  $Res call({Verifykey key});
+  $Res call({Verifykey key, String otpCode});
 
   $VerifykeyCopyWith<$Res> get key;
 }
@@ -80,12 +81,17 @@ class _$PostTokenEventCopyWithImpl<$Res, $Val extends PostTokenEvent>
   @override
   $Res call({
     Object? key = null,
+    Object? otpCode = null,
   }) {
     return _then(_value.copyWith(
       key: null == key
           ? _value.key
           : key // ignore: cast_nullable_to_non_nullable
               as Verifykey,
+      otpCode: null == otpCode
+          ? _value.otpCode
+          : otpCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -106,7 +112,7 @@ abstract class _$$PostKeyImplCopyWith<$Res>
       __$$PostKeyImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Verifykey key});
+  $Res call({Verifykey key, String otpCode});
 
   @override
   $VerifykeyCopyWith<$Res> get key;
@@ -124,12 +130,17 @@ class __$$PostKeyImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? key = null,
+    Object? otpCode = null,
   }) {
     return _then(_$PostKeyImpl(
       key: null == key
           ? _value.key
           : key // ignore: cast_nullable_to_non_nullable
               as Verifykey,
+      otpCode: null == otpCode
+          ? _value.otpCode
+          : otpCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -137,14 +148,16 @@ class __$$PostKeyImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$PostKeyImpl implements _PostKey {
-  const _$PostKeyImpl({required this.key});
+  const _$PostKeyImpl({required this.key, required this.otpCode});
 
   @override
   final Verifykey key;
+  @override
+  final String otpCode;
 
   @override
   String toString() {
-    return 'PostTokenEvent.postKey(key: $key)';
+    return 'PostTokenEvent.postKey(key: $key, otpCode: $otpCode)';
   }
 
   @override
@@ -152,11 +165,12 @@ class _$PostKeyImpl implements _PostKey {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PostKeyImpl &&
-            (identical(other.key, key) || other.key == key));
+            (identical(other.key, key) || other.key == key) &&
+            (identical(other.otpCode, otpCode) || other.otpCode == otpCode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, key);
+  int get hashCode => Object.hash(runtimeType, key, otpCode);
 
   @JsonKey(ignore: true)
   @override
@@ -167,27 +181,27 @@ class _$PostKeyImpl implements _PostKey {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Verifykey key) postKey,
+    required TResult Function(Verifykey key, String otpCode) postKey,
   }) {
-    return postKey(key);
+    return postKey(key, otpCode);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Verifykey key)? postKey,
+    TResult? Function(Verifykey key, String otpCode)? postKey,
   }) {
-    return postKey?.call(key);
+    return postKey?.call(key, otpCode);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Verifykey key)? postKey,
+    TResult Function(Verifykey key, String otpCode)? postKey,
     required TResult orElse(),
   }) {
     if (postKey != null) {
-      return postKey(key);
+      return postKey(key, otpCode);
     }
     return orElse();
   }
@@ -222,10 +236,14 @@ class _$PostKeyImpl implements _PostKey {
 }
 
 abstract class _PostKey implements PostTokenEvent {
-  const factory _PostKey({required final Verifykey key}) = _$PostKeyImpl;
+  const factory _PostKey(
+      {required final Verifykey key,
+      required final String otpCode}) = _$PostKeyImpl;
 
   @override
   Verifykey get key;
+  @override
+  String get otpCode;
   @override
   @JsonKey(ignore: true)
   _$$PostKeyImplCopyWith<_$PostKeyImpl> get copyWith =>

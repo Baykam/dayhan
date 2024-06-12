@@ -16,6 +16,4 @@ mixin MixinNavBar on State<Navbar> {
   }
 
   void selected(int value) => setState(() => selectedIndex = value);
-
-  void goAddProduct() => context.pushNamed(RoutePath.addProduct.name);
 }

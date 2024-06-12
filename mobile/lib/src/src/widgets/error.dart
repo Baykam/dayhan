@@ -6,19 +6,21 @@ final class ProductErrorWidget extends StatelessWidget {
   final String error;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Assets.lottie.errorLottie.lottie(
-          height: 200,
-          width: 200,
-          fit: BoxFit.cover,
-        ),
-        Text(
-          error,
-          style: ProductTextStyle.i.t12,
-        ),
-      ],
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Assets.lottie.errorLottie.lottie(
+            height: 200,
+            width: 200,
+            fit: BoxFit.cover,
+          ),
+          Text(
+            error,
+            style: ProductTextStyle.i.t12,
+          ),
+        ],
+      ),
     );
   }
 }

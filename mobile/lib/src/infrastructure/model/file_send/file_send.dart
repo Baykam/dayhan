@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'file_send.g.dart';
@@ -16,5 +14,6 @@ class FileSend with _$FileSend {
   }) = _FileSend;
 
   /// fromJson function
-  factory FileSend.fromJson(Map<String, dynamic> json) => _$FileSendFromJson(json);
+  factory FileSend.fromJson(Map<String, dynamic> json) =>
+      _$FileSendFromJson(json);
 }

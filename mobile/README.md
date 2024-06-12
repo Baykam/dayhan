@@ -1,16 +1,18 @@
 # dayhan_mobile
+FLUTTER APP TEST PROJECT
+1. please go to the ../backend README.md file and run that golang backend project
+2. then go mobile folder and run that project code.  
+flutter run
+command
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+INTRODUCTION PROJECT PAGES
+--1  auth
+--2  otp
+if(authenticated)
+--3 navbar
+--4 home (delete, update, getById {product functions})
+--5 add product
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+IMAGE

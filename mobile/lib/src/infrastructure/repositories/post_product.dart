@@ -28,8 +28,9 @@ final class PostProduct implements IPostProduct {
   }
 
   @override
-  Future<Either<Error, Product>> updateProduct(
-      {required Product product}) async {
+  Future<Either<Error, Product>> updateProduct({
+    required Product product,
+    }) async {
     final url = 'product/${product.id}';
     final res = await NetworkManager.i.post(
       url: url,

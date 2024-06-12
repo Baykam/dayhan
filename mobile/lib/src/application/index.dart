@@ -5,4 +5,5 @@ export 'post_phone/post_phone_bloc.dart';
 export 'post_product/post_product_bloc.dart';
 export 'post_token/post_token_bloc.dart';
 export 'product_req/product_req_bloc.dart';
+export 'search_product_list/search_product_list_bloc.dart';
 export 'settings/settings_bloc.dart';

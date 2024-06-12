@@ -135,3 +135,8 @@ func (h *HttpPort) UpdateProductById(c *gin.Context) {
 
 	utils.Response(c, 200, result)
 }
+
+func (h *HttpPort) RedirectFolder(c *gin.Context) {
+	newPath := "/cmd/" + c.FullPath()
+	c.Redirect(301, newPath)
+}

@@ -17,7 +17,6 @@ final class ProductTextFormFiled extends StatefulWidget {
     this.validator,
     this.obscureText,
     this.titleCenter,
-    this.needPrefix,
     this.prefix,
     this.textInputType,
     this.inputFormatters,
@@ -32,7 +31,7 @@ final class ProductTextFormFiled extends StatefulWidget {
   final double? padding;
   final String? validateText;
   final String? Function(String?)? validator;
-  final bool? obscureText, titleCenter, needPrefix;
+  final bool? obscureText, titleCenter;
   final Widget? prefix;
   final TextInputType? textInputType;
   final List<TextInputFormatter>? inputFormatters;
@@ -62,7 +61,7 @@ class _ProductTextFormFiledState extends State<ProductTextFormFiled> {
           contentPadding: EdgeInsets.symmetric(
               vertical: widget.padding ?? 0, horizontal: 15),
           labelStyle: ProductTextStyle.i.t12,
-          prefixIcon: widget.needPrefix ?? false ? widget.prefix : null,
+          prefixIcon: widget.prefix,
           suffixIcon: widget.needSuffixIcon ?? false
               ? IconButton(
                   icon: Icon(

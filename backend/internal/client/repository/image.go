@@ -3,15 +3,19 @@ package repository
 import (
 	"database/sql"
 	"dayhan/internal/client/dto"
+	"dayhan/internal/packages/config"
+	"fmt"
 )
 
 type ImageRepository struct {
-	db *sql.DB
+	db  *sql.DB
+	cfg config.Schema
 }
 
-func NewImageRepository(db *sql.DB) ImageRepositoryInterface {
+func NewImageRepository(db *sql.DB, cfg config.Schema) ImageRepositoryInterface {
 	return &ImageRepository{
-		db: db,
+		db:  db,
+		cfg: cfg,
 	}
 }
 
@@ -33,7 +37,8 @@ func (r *ImageRepository) GetImageList(productId int64) (*[]dto.ImageRes, error)
 		if err := rows.Scan(&pp.URL); err != nil {
 			return nil, err
 		}
-		products = append(products, pp)
+		image := fmt.Sprintf("http://%s:%v/%s", r.cfg.Host, r.cfg.HttpPort, pp.URL)
+		products = append(products, dto.ImageRes{URL: image})
 	}
 	return &products, nil
 }
