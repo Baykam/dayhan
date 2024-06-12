@@ -32,6 +32,7 @@ final class StateInitializer extends StatelessWidget {
         BlocProvider(create: (context) => SearchProductListBloc()),
         BlocProvider(create: (context) => GetProductByIdBloc()),
         BlocProvider(create: (context) => PostProductBloc()),
+        BlocProvider(create: (context) => DeleteProductBloc()),
       ],
       child: child,
     );

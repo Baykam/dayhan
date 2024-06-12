@@ -19,12 +19,11 @@ final class GetProductList implements IGetProductList {
     );
 
     if (res.statusCode == 200) {
-      final w = jsonDecode(utf8.decode(res.bodyBytes)) as List<dynamic>;
-      final r = w
-          .map(
+      final w = jsonDecode(utf8.decode(res.bodyBytes)) as List<dynamic>?;
+      final r = w?.map(
             (e) => Product.fromJson(e as Map<String, dynamic>),
           )
-          .toList();
+          .toList() ?? [];
       return right(r);
     } else {
       final p = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;

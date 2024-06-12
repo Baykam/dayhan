@@ -22,6 +22,7 @@ func NewImageRepository(db *sql.DB, cfg config.Schema) ImageRepositoryInterface 
 type ImageRepositoryInterface interface {
 	GetImageList(productId int64) (*[]dto.ImageRes, error)
 	CreateImage(productId int64, imagePath string) (int64, error)
+	DeleteImageByProductId(productId int64) error
 }
 
 func (r *ImageRepository) GetImageList(productId int64) (*[]dto.ImageRes, error) {
@@ -59,4 +60,13 @@ func (r *ImageRepository) CreateImage(productId int64, imagePath string) (int64,
 	}
 
 	return createdProductID, nil
+}
+
+func (r *ImageRepository) DeleteImageByProductId(productId int64) error {
+	query := fmt.Sprintf(`DELETE FROM images WHERE product_id = '%v'`, productId)
+	_, err := r.db.Exec(query)
+	if err != nil {
+		return err
+	}
+	return nil
 }

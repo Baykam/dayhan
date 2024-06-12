@@ -38,7 +38,9 @@ class _HomePageState extends State<HomePage> with MixinHomePage {
             builder: (context, state) => state.maybeWhen(
               orElse: ProductProgress.new,
               failed: Text.new,
-              success: (p) => ListView.separated(
+              success: (p) => p.isEmpty ?
+              const Center(child: Text('List is Empty'))
+                  : ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) => _successWidget(p[index]),
                 itemCount: p.length,
@@ -52,6 +54,10 @@ class _HomePageState extends State<HomePage> with MixinHomePage {
 
   Widget _successWidget(Product p) => Dismissible(
         key: Key(p.id.toString()),
+        background: Container(
+          color: ProductColor.i.red,
+          child: ProductIcons.delete.toIcon(),
+        ),
         confirmDismiss: (direction) => conFirmDismiss(direction, p),
         child: ProductListResult(
           product: p,
@@ -76,13 +82,26 @@ class _HomePageState extends State<HomePage> with MixinHomePage {
                       height: 5,
                     ),
                     SizedBox(
-                      height: 100,
+                      height: 80,
                       child: ProductCarouselSlider(
                         urls:
                             product.images?.map((e) => e.url ?? '').toList() ??
                                 [],
                       ),
                     ),
+
+                    // const SizedBox(height: 10,),
+                    // SizedBox(
+                    //   height: 100,
+                    //   child: ListView.builder(
+                    //     itemCount: product.videos?.length,
+                    //     itemBuilder: (context, index) {
+                    //      return ProductNetworkVideoPlayer(
+                    //          path: product.videos?[index].url ?? '',
+                    //      );
+                    //    },
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 5,
                     ),
@@ -109,11 +128,9 @@ class _HomePageState extends State<HomePage> with MixinHomePage {
                     Assets.lottie.accepted.lottie(fit: BoxFit.cover),
               ),
               listener: (context, state) => state.whenOrNull(
-                failed: (m) async =>
-                    await Future.delayed(const Duration(seconds: 1))
+                failed: (m) => Future.delayed(const Duration(seconds: 1))
                         .then((value) => Navigator.pop(context, false)),
-                success: (m) async =>
-                    await Future.delayed(const Duration(seconds: 1))
+                success:(m) => Future.delayed(const Duration(seconds: 1))
                         .then((value) => Navigator.pop(context, true)),
               ),
             ),

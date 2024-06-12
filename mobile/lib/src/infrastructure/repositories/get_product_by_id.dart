@@ -13,12 +13,12 @@ final class GetProductById implements IGetProductById{
     final res = await NetworkManager.i.get(url: url,
     returnFunc: ()=> getProductById(productId, limit, page),
     );
-    final w = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+    final w = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>?;
     if(res.statusCode == 200){
-      final r = Product.fromJson(w);
+      final r = Product.fromJson(w ?? {});
       return right(r);
     }else{
-      final l = Error.fromJson(w);
+      final l = Error.fromJson(w ?? {});
       return left(l);
     }
   }

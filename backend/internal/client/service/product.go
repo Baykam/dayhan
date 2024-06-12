@@ -156,7 +156,15 @@ func (p *ProductService) DeleteProductById(userId string, id int64) error {
 	if err != nil {
 		return err
 	}
-	_, err = p.repo.GetProductByIdAndUserId(id, user.ID)
+	product, err := p.repo.GetProductByIdAndUserId(id, user.ID)
+	if err != nil {
+		return err
+	}
+	err = p.imageRepo.DeleteImageByProductId(int64(product.Id))
+	if err != nil {
+		return err
+	}
+	err = p.videoRepo.DeleteVideoByProductId(int64(product.Id))
 	if err != nil {
 		return err
 	}

@@ -22,6 +22,7 @@ func NewVideoRepository(db *sql.DB, cfg config.Schema) VideoRepositoryInterface 
 type VideoRepositoryInterface interface {
 	GetVideoList(productId int64) (*[]dto.VideoRes, error)
 	CreateVideo(productId int64, imagePath string) (int64, error)
+	DeleteVideoByProductId(productId int64) error
 }
 
 func (r *VideoRepository) GetVideoList(productId int64) (*[]dto.VideoRes, error) {
@@ -59,4 +60,13 @@ func (r *VideoRepository) CreateVideo(productId int64, imagePath string) (int64,
 	}
 
 	return createdProductID, nil
+}
+
+func (r *VideoRepository) DeleteVideoByProductId(productId int64) error {
+	query := fmt.Sprintf(`DELETE FROM videos WHERE product_id = '%v'`, productId)
+	_, err := r.db.Exec(query)
+	if err != nil {
+		return err
+	}
+	return nil
 }
