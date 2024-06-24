@@ -13,12 +13,13 @@ final class DeleteProduct implements IDeleteProduct {
       url: url,
       returnFunc: () => deleteProduct(id: id),
     );
-    final w = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+    final w = jsonDecode(utf8.decode(res.bodyBytes));
     if (res.statusCode == 200) {
-      final r = w['results'] as String?;
+      final r = w as String?;
       return right(r);
     } else {
-      final l = Error.fromJson(w);
+      final o = w as Map<String, dynamic>;
+      final l = Error.fromJson(o);
       return left(l);
     }
   }

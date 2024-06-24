@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
 enum ProductLocale {
-  en(locale: Locale('en'), dd: 'en'),
+  en(locale: Locale('en')),
   tr(locale: Locale('tr')),
   tm(locale: Locale('tm')),
-  ru(locale: Locale('ru')),
-  ;
+  ru(locale: Locale('ru'));
 
   final Locale locale;
-  final String? dd;
 
-  const ProductLocale({required this.locale, this.dd});
+  const ProductLocale({required this.locale});
 }

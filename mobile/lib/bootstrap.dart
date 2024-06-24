@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:dayhan_mobile/src/infrastructure/index.dart';
 import 'package:dayhan_mobile/src/src/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -66,6 +67,12 @@ final class ApplicationInitialize {
       await SharedPreferences.getInstance();
       final as = await getApplicationCacheDirectory();
       await Hive.initFlutter(as.path);
+
+      Hive
+          ..registerAdapter(ProductAdapter())
+          ..registerAdapter(FileSendAdapter());
+
+      await Hive.openBox<Product>(CachePaths.productCache.path);
     }
 
     await SystemChrome.setPreferredOrientations(

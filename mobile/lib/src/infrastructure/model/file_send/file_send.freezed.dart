@@ -20,7 +20,9 @@ FileSend _$FileSendFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$FileSend {
+  @HiveField(0)
   String? get name => throw _privateConstructorUsedError;
+  @HiveField(1)
   String? get url => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -34,7 +36,7 @@ abstract class $FileSendCopyWith<$Res> {
   factory $FileSendCopyWith(FileSend value, $Res Function(FileSend) then) =
       _$FileSendCopyWithImpl<$Res, FileSend>;
   @useResult
-  $Res call({String? name, String? url});
+  $Res call({@HiveField(0) String? name, @HiveField(1) String? url});
 }
 
 /// @nodoc
@@ -74,7 +76,7 @@ abstract class _$$FileSendImplCopyWith<$Res>
       __$$FileSendImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? name, String? url});
+  $Res call({@HiveField(0) String? name, @HiveField(1) String? url});
 }
 
 /// @nodoc
@@ -107,14 +109,16 @@ class __$$FileSendImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$FileSendImpl implements _FileSend {
-  const _$FileSendImpl({this.name, this.url});
+  const _$FileSendImpl({@HiveField(0) this.name, @HiveField(1) this.url});
 
   factory _$FileSendImpl.fromJson(Map<String, dynamic> json) =>
       _$$FileSendImplFromJson(json);
 
   @override
+  @HiveField(0)
   final String? name;
   @override
+  @HiveField(1)
   final String? url;
 
   @override
@@ -150,15 +154,18 @@ class _$FileSendImpl implements _FileSend {
 }
 
 abstract class _FileSend implements FileSend {
-  const factory _FileSend({final String? name, final String? url}) =
-      _$FileSendImpl;
+  const factory _FileSend(
+      {@HiveField(0) final String? name,
+      @HiveField(1) final String? url}) = _$FileSendImpl;
 
   factory _FileSend.fromJson(Map<String, dynamic> json) =
       _$FileSendImpl.fromJson;
 
   @override
+  @HiveField(0)
   String? get name;
   @override
+  @HiveField(1)
   String? get url;
   @override
   @JsonKey(ignore: true)

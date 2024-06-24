@@ -37,36 +37,53 @@ class _HomePageState extends State<HomePage> with MixinHomePage {
           child: BlocBuilder<GetProductListBloc, GetProductListState>(
             builder: (context, state) => state.maybeWhen(
               orElse: ProductProgress.new,
-              failed: Text.new,
-              success: (p) => p.isEmpty ?
-              const Center(child: Text('List is Empty'))
+              failed: (m) => ProductErrorWidget(error: m),
+              success: (p) => p.isEmpty
+                  ? const Center(child: Text('List is Empty'))
                   : ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) => _successWidget(p[index]),
-                itemCount: p.length,
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(),
-              ),
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) => _successWidget(p[index]),
+                      itemCount: p.length,
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(),
+                    ),
             ),
           ),
         ),
       );
 
-  Widget _successWidget(Product p) => Dismissible(
-        key: Key(p.id.toString()),
-        background: Container(
-          color: ProductColor.i.red,
-          child: ProductIcons.delete.toIcon(),
-        ),
-        confirmDismiss: (direction) => conFirmDismiss(direction, p),
-        child: ProductListResult(
-          product: p,
-          ontap: () => onTapProduct(product: p),
+  Widget _successWidget(Product p) => Padding(
+        padding: Productpadding.h15.padding,
+        child: Dismissible(
+          key: Key(p.id.toString()),
+          background: Container(
+            color: ProductColor.i.red,
+            child: ProductIcons.delete.toIcon(),
+          ),
+          secondaryBackground: Container(
+            color: ProductColor.i.green,
+            child: ProductIcons.update.toIcon(),
+          ),
+          confirmDismiss: (direction) => conFirmDismiss(direction, p),
+          child: ProductListResult(
+            product: p,
+            ontap: () => onTapProduct(product: p),
+            trailing: BlocBuilder<CacheBloc, CacheState>(
+              builder: (context, cache) {
+                return IconButton(
+                  onPressed: () => addCache(p, cache.products.contains(p)),
+                  icon: cache.products.contains(p) ? ProductIcons.add.toIcon(
+                    color: ProductColor.i.red,)
+                      : ProductIcons.add.toIcon(),
+                );
+              },
+            ),
+          ),
         ),
       );
 
   @override
-  showProductbyId(BuildContext context) => showDialog(
+  Future<dynamic> showProductbyId(BuildContext context) => showDialog(
         context: context,
         builder: (context) => Dialog(
           child: SizedBox(
@@ -77,31 +94,12 @@ class _HomePageState extends State<HomePage> with MixinHomePage {
                 failed: (m) => ProductErrorWidget(error: m),
                 success: (product) => Column(
                   children: [
-                    Text('Product id : ${product.id}'),
-                    const SizedBox(
-                      height: 5,
+                    const SizedBox(height: 5,),
+                    ProductCarouselSlider(
+                      urls:
+                          product.images?.map((e) => e.url ?? '').toList() ??
+                              [],
                     ),
-                    SizedBox(
-                      height: 80,
-                      child: ProductCarouselSlider(
-                        urls:
-                            product.images?.map((e) => e.url ?? '').toList() ??
-                                [],
-                      ),
-                    ),
-
-                    // const SizedBox(height: 10,),
-                    // SizedBox(
-                    //   height: 100,
-                    //   child: ListView.builder(
-                    //     itemCount: product.videos?.length,
-                    //     itemBuilder: (context, index) {
-                    //      return ProductNetworkVideoPlayer(
-                    //          path: product.videos?[index].url ?? '',
-                    //      );
-                    //    },
-                    //   ),
-                    // ),
                     const SizedBox(
                       height: 5,
                     ),
@@ -129,9 +127,9 @@ class _HomePageState extends State<HomePage> with MixinHomePage {
               ),
               listener: (context, state) => state.whenOrNull(
                 failed: (m) => Future.delayed(const Duration(seconds: 1))
-                        .then((value) => Navigator.pop(context, false)),
-                success:(m) => Future.delayed(const Duration(seconds: 1))
-                        .then((value) => Navigator.pop(context, true)),
+                    .then((value) => Navigator.pop(context, false)),
+                success: (m) => Future.delayed(const Duration(seconds: 1))
+                    .then((value) => Navigator.pop(context, true)),
               ),
             ),
           ),
@@ -139,7 +137,7 @@ class _HomePageState extends State<HomePage> with MixinHomePage {
       );
 
   @override
-  Future<dynamic> showUpdateProduct(BuildContext context) {
+  Future<bool?> showUpdateProduct(BuildContext context) {
     return showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -152,12 +150,10 @@ class _HomePageState extends State<HomePage> with MixinHomePage {
               success: (m) => Assets.lottie.accepted.lottie(fit: BoxFit.cover),
             ),
             listener: (context, state) => state.whenOrNull(
-              failed: (m) async =>
-                  await Future.delayed(const Duration(seconds: 1))
-                      .then((value) => Navigator.pop(context, false)),
-              success: (m) async =>
-                  await Future.delayed(const Duration(seconds: 1))
-                      .then((value) {
+              failed: (m) => Future.delayed(const Duration(seconds: 1))
+                  .then((value) => Navigator.pop(context, false)),
+              success: (m) =>
+                  Future.delayed(const Duration(seconds: 1)).then((value) {
                 Navigator.pop(context, true);
                 context
                     .read<GetProductListBloc>()

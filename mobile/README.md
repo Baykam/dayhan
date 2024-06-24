@@ -14,5 +14,17 @@ if(authenticated)
 --3 navbar
 --4 home (delete, update, getById {product functions})
 --5 add product
+--6 settings (theme_change, change_locale, logout)
+--7 search (search by title)
+--8 cache
 
-IMAGE
+using techs:
+-- go_router
+-- flutter_bloc
+-- lottie
+-- json
+-- very_good_analysis
+-- hive
+-- http/dartz
+-- file_picker
+

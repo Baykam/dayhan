@@ -1,19 +1,9 @@
 part of 'navbar.dart';
 
 mixin MixinNavBar on State<Navbar> {
-  int selectedIndex = 0;
-  bool d = false;
-  @override
-  void initState() {
-    // initFunc();
-    super.initState();
-  }
+  // int selectedIndex = 0;
 
-  void initFunc() {
-    bool s = context.read<SettingsBloc>().state.theme ==
-        ProductLightTheme().themeData;
-    d = s;
-  }
-
-  void selected(int value) => setState(() => selectedIndex = value);
+  void selected(int value) =>
+      context.read<NavbarBloc>().add(NavbarEvent.indexed(index: value));
+  //  setState(() => selectedIndex = value);
 }

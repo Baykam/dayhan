@@ -1,2 +1,6 @@
 *.sh
 /project_structure
+*.jpeg
+*.jpg
+*.png
+*.mp4

@@ -23,6 +23,7 @@ type ImageRepositoryInterface interface {
 	GetImageList(productId int64) (*[]dto.ImageRes, error)
 	CreateImage(productId int64, imagePath string) (int64, error)
 	DeleteImageByProductId(productId int64) error
+	DeleteImageById(id int64) error
 }
 
 func (r *ImageRepository) GetImageList(productId int64) (*[]dto.ImageRes, error) {
@@ -64,6 +65,15 @@ func (r *ImageRepository) CreateImage(productId int64, imagePath string) (int64,
 
 func (r *ImageRepository) DeleteImageByProductId(productId int64) error {
 	query := fmt.Sprintf(`DELETE FROM images WHERE product_id = '%v'`, productId)
+	_, err := r.db.Exec(query)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ImageRepository) DeleteImageById(id int64) error {
+	query := fmt.Sprintf(`DELETE FROM images WHERE id = '%v'`, id)
 	_, err := r.db.Exec(query)
 	if err != nil {
 		return err

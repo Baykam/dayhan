@@ -1,4 +1,5 @@
 import 'package:dayhan_mobile/src/application/index.dart';
+import 'package:dayhan_mobile/src/src/pages/cache/cache.dart';
 import 'package:dayhan_mobile/src/src/pages/home/home.dart';
 import 'package:dayhan_mobile/src/src/pages/search/search.dart';
 import 'package:dayhan_mobile/src/src/pages/settings/settings.dart';
@@ -18,24 +19,30 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> with MixinNavBar {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: selectedIndex,
-        children: const [
-          HomePage(),
-          SearchPage(),
-          SettingsPage(),
-        ],
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedIndex,
-        onDestinationSelected: selected,
-        destinations: [
-          _nav(ProductIcons.home.icon, 'home'),
-          _nav(ProductIcons.search.icon, 'search'),
-          _nav(ProductIcons.settings.icon, 'settings'),
-        ],
-      ),
+    return BlocBuilder<NavbarBloc, NavbarState>(
+      builder: (context, nav) {
+        return Scaffold(
+          body: IndexedStack(
+            index: nav.index,
+            children: const [
+              HomePage(),
+              SearchPage(),
+              CachePage(),
+              SettingsPage(),
+            ],
+          ),
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: nav.index,
+            onDestinationSelected: selected,
+            destinations: [
+              _nav(ProductIcons.home.icon, 'home'),
+              _nav(ProductIcons.search.icon, 'search'),
+              _nav(ProductIcons.cache.icon, 'cache'),
+              _nav(ProductIcons.settings.icon, 'settings'),
+            ],
+          ),
+        );
+      },
     );
   }
 

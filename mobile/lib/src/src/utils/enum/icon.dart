@@ -7,7 +7,8 @@ enum ProductIcons {
   add(icon: Icons.add),
   delete(icon: Icons.delete),
   update(icon: Icons.update),
-  ;
+  love(icon: Icons.heart_broken_outlined),
+  cache(icon: Icons.cached_outlined);
 
   final IconData icon;
 

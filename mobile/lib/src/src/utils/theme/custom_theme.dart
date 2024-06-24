@@ -7,4 +7,8 @@ abstract class CustomTheme {
 
   /// app bar theme data
   AppBarTheme get appBarTheme;
+
+  ListTileThemeData get listTileTheme;
+
+  IconButtonThemeData get iconButtonTheme;
 }

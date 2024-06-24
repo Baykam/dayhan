@@ -175,7 +175,7 @@ func (r *Repository) CreateProduct(req *dto.ProductCreateRequest, userId int64) 
 }
 
 func (r *Repository) DeleteProductById(id int64, userId int64) error {
-	query := fmt.Sprintf(`DELETE FROM product WHERE id = '%v' AND user_id = '%v'`, id, userId)
+	query := fmt.Sprintf(`DELETE FROM product WHERE id = '%v'`, id)
 	_, err := r.db.Exec(query)
 	if err != nil {
 		return err

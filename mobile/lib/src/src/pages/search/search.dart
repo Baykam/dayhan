@@ -50,9 +50,12 @@ class _SearchPageState extends State<SearchPage> with MixinSearchPage {
             success: (p) => ListView.separated(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) => ProductListResult(
-                product: p[index],
-                ontap: () => onTapProduct(product: p[index]),
+              itemBuilder: (context, index) => Padding(
+                padding: Productpadding.h15.padding,
+                child: ProductListResult(
+                  product: p[index],
+                  ontap: () => onTapProduct(product: p[index]),
+                ),
               ),
               separatorBuilder: (context, index) => const Divider(),
               itemCount: p.length,

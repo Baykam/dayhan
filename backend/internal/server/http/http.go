@@ -7,6 +7,7 @@ import (
 	productRoutes "dayhan/internal/client/port/http"
 	"dayhan/internal/middleware"
 	"dayhan/internal/packages/config"
+	kfk "dayhan/internal/packages/kafka"
 	rds "dayhan/internal/packages/redis"
 	"fmt"
 	"log"
@@ -27,15 +28,17 @@ type Server struct {
 	validator validation.Validation
 	db        *sql.DB
 	rds       rds.RedisDatabase
+	kfk       kfk.KafkaConn
 }
 
-func NewServer(validator validation.Validation, db *sql.DB, rds rds.RedisDatabase) *Server {
+func NewServer(validator validation.Validation, db *sql.DB, rds rds.RedisDatabase, kfk kfk.KafkaConn) *Server {
 	return &Server{
 		engine:    gin.Default(),
 		cfg:       config.GetConfig(),
 		validator: validator,
 		db:        db,
 		rds:       rds,
+		kfk:       kfk,
 	}
 }
 
@@ -90,6 +93,6 @@ func (s Server) MapRoutes(token token.TokenService) error {
 	api := s.engine.Group("/api")
 	v1 := api.Group("/v1")
 	v1.Use(middleware.UserMiddleware(token))
-	productRoutes.Routes(v1, s.db, &s.validator, *s.cfg)
+	productRoutes.Routes(v1, s.db, &s.validator, *s.cfg, s.kfk)
 	return nil
 }

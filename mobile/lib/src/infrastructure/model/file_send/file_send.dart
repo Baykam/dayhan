@@ -1,16 +1,17 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 part 'file_send.g.dart';
 part 'file_send.freezed.dart';
 
 @freezed
-
+@HiveType(typeId: 1)
 /// FileSend Control model
 class FileSend with _$FileSend {
   ///
   const factory FileSend({
-    String? name,
-    String? url,
+    @HiveField(0) String? name,
+    @HiveField(1) String? url,
   }) = _FileSend;
 
   /// fromJson function

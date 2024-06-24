@@ -1,6 +1,7 @@
 package dto
 
 type ImageRes struct {
+	Id  int64  `json:"id"`
 	URL string `json:"url"`
 }
 

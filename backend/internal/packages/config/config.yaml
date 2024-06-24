@@ -1,6 +1,6 @@
 environment: production
 http_port: 9999
-host: 192.168.1.184
+host: 192.168.1.109
 # host: "127.0.0.3"
 # for web cors port number
 # chrome_port: 45972
@@ -10,6 +10,8 @@ db_url: postgresql://root:password@localhost:5433/dayhan_db?sslmode=disable
 rds_addr: localhost:6380
 rds_pas:
 rds_db: 0
+
+kafka_broker: localhost:9092
 
 auth_key: "i45u934ujfskdmflfsdkfweuut934utjksdfksmdkfmdkfhsdherwreurugttfdbsbsfhgwyrt7324wefhbdbfshdfgysdgf783t32grbfdsn"
 user_key: "hbgrehgeknjergb84983rhjfh384yt3u4hg83unu3g2h3hfn923fh283fn23ugf273gbfy3g893h4bfu344374h3f34gf34gf2ihe2ijwj2je"

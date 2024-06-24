@@ -4,9 +4,12 @@ cd docker
 <!-- 2. Then build docker images  -->
 docker build -t <image_name> redis/.
 docker build -t <image_name> postgres/.
+docker build -t <image_name> kafka/.
 <!-- 3. run and give the container name -->
 docker run -d --name <container_name> -p 5433:5432 <image_name>
 docker run -d --name <container_name> -p 6380:6379 <image_name>
+ docker run -d --name zookeper_dayhan -p 2181:2181 dayhan_zookeper
+ docker run -d --name kafka_dayhan -p 9092:9092 dayhan_kafka
 <!-- 4. start container -->
 docker start <container_name>
 <!-- 5. edit the config.yaml -->

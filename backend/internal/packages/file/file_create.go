@@ -44,3 +44,14 @@ func FileDecodeFromByte(apiDataString, fileName, fileType string) (string, error
 
 	return filePath, nil
 }
+
+func DeleteFile(filePath string) error {
+	err := os.Remove(filePath)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return errors.New("File not found: " + filePath)
+		}
+		return err
+	}
+	return nil
+}

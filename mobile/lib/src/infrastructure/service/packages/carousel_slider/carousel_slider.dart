@@ -20,14 +20,8 @@ final class ProductCarouselSlider extends StatelessWidget {
            return Image.network(urls[index],
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
-            return Container(
-              height: 80,
-              width: 80,
-              child: Column(
-                children: [
-                  Assets.lottie.errorLottie.lottie(),
-                ],
-              ),
+            return Assets.lottie.errorLottie.lottie(
+              fit: BoxFit.contain,
             );
           },
           );

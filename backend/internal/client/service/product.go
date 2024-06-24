@@ -3,7 +3,14 @@ package service
 import (
 	"dayhan/internal/client/dto"
 	"dayhan/internal/client/repository"
+	defaa "dayhan/internal/packages/default"
 	"dayhan/internal/packages/file"
+	productKafka "dayhan/internal/packages/kafka"
+	"encoding/json"
+	"log"
+	"time"
+
+	"github.com/segmentio/kafka-go"
 )
 
 type ProductService struct {
@@ -11,6 +18,7 @@ type ProductService struct {
 	imageRepo repository.ImageRepositoryInterface
 	userRepo  repository.UserRepositoryInterface
 	videoRepo repository.VideoRepositoryInterface
+	conn      productKafka.KafkaConn
 }
 
 func NewProductService(
@@ -18,12 +26,14 @@ func NewProductService(
 	imageRepo repository.ImageRepositoryInterface,
 	userRepo repository.UserRepositoryInterface,
 	videoRepo repository.VideoRepositoryInterface,
+	conn productKafka.KafkaConn,
 ) ProductServiceInterface {
 	return &ProductService{
 		repo:      repo,
 		imageRepo: imageRepo,
 		userRepo:  userRepo,
 		videoRepo: videoRepo,
+		conn:      conn,
 	}
 }
 
@@ -90,25 +100,29 @@ func (p *ProductService) CreateProduct(req *dto.ProductCreateRequest, userId str
 		return nil, err
 	}
 
-	for _, v := range *req.Images {
-		path, err := file.FileDecodeFromByte(*v.Url, *v.Name, "image")
-		if err != nil {
-			return nil, err
-		}
-		imageId, err := p.imageRepo.CreateImage(productId, path)
-		if err != nil || imageId == 0 {
-			return nil, err
+	if req.Images != nil {
+		for _, v := range *req.Images {
+			path, err := file.FileDecodeFromByte(*v.Url, *v.Name, "image")
+			if err != nil {
+				return nil, err
+			}
+			imageId, err := p.imageRepo.CreateImage(productId, path)
+			if err != nil || imageId == 0 {
+				return nil, err
+			}
 		}
 	}
 
-	for _, v := range *req.Videos {
-		path, err := file.FileDecodeFromByte(*v.Url, *v.Name, "video")
-		if err != nil {
-			return nil, err
-		}
-		videoId, err := p.videoRepo.CreateVideo(productId, path)
-		if err != nil || videoId == 0 {
-			return nil, err
+	if req.Videos != nil {
+		for _, v := range *req.Videos {
+			path, err := file.FileDecodeFromByte(*v.Url, *v.Name, "video")
+			if err != nil {
+				return nil, err
+			}
+			videoId, err := p.videoRepo.CreateVideo(productId, path)
+			if err != nil || videoId == 0 {
+				return nil, err
+			}
 		}
 	}
 
@@ -116,6 +130,46 @@ func (p *ProductService) CreateProduct(req *dto.ProductCreateRequest, userId str
 	if err != nil {
 		return nil, err
 	}
+	go func() {
+		productJson, err := json.Marshal(product)
+		if err != nil {
+			log.Fatalf("error when json convert")
+		}
+
+		p.conn.Conn.WriteMessages(kafka.Message{
+			Topic: defaa.KafkaTopicNotification,
+			Key:   []byte(userId),
+			Value: productJson,
+		})
+		p.conn.Conn.SetReadDeadline(time.Now().Add(10 * time.Second))
+		batch := p.conn.Conn.ReadBatch(10e3, 1e6)
+		defer batch.Close()
+
+		for {
+			// message := kafka.Message{}
+			t, err := batch.ReadMessage()
+			if err != nil {
+				if err == kafka.ErrGenerationEnded {
+					break
+				}
+				continue
+			}
+			// Deserialize the message value to check the productId
+			var msgProduct dto.ProductRes
+			err = json.Unmarshal(t.Value, &msgProduct)
+			if err != nil {
+				log.Printf("error when unmarshaling message: %v", err)
+				continue
+			}
+
+			// Filter messages by productId
+			if msgProduct.Id == product.Id {
+				log.Printf("Message read from kafka with productId %d: %s\n", msgProduct.Id, string(t.Value))
+				// Process the message as needed
+				break
+			}
+		}
+	}()
 	return product, nil
 }
 
@@ -156,17 +210,50 @@ func (p *ProductService) DeleteProductById(userId string, id int64) error {
 	if err != nil {
 		return err
 	}
-	product, err := p.repo.GetProductByIdAndUserId(id, user.ID)
+	product, err := p.repo.GetProductById(id)
 	if err != nil {
 		return err
 	}
-	err = p.imageRepo.DeleteImageByProductId(int64(product.Id))
+
+	images, err := p.imageRepo.GetImageList(int64(product.Id))
 	if err != nil {
 		return err
 	}
-	err = p.videoRepo.DeleteVideoByProductId(int64(product.Id))
+	if images != nil {
+		err = p.imageRepo.DeleteImageByProductId(int64(product.Id))
+		if err != nil {
+			return err
+		}
+		for _, v := range *images {
+			path, err := file.GetPathRightSide(v.URL)
+			if err != nil {
+				return err
+			}
+			err = file.DeleteFile(path)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	videos, err := p.videoRepo.GetVideoList(int64(product.Id))
 	if err != nil {
 		return err
+	}
+	if videos != nil {
+		err = p.videoRepo.DeleteVideoByProductId(int64(product.Id))
+		if err != nil {
+			return err
+		}
+		for _, v := range *videos {
+			path, err := file.GetPathRightSide(v.URL)
+			if err != nil {
+				return err
+			}
+			err = file.DeleteFile(path)
+			if err != nil {
+				return err
+			}
+		}
 	}
 	err = p.repo.DeleteProductById(id, user.ID)
 	if err != nil {

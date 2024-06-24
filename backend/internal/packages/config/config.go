@@ -21,6 +21,7 @@ type Schema struct {
 	UserKey     string `env:"user_key"`
 	Host        string `env:"host"`
 	ChromePort  int    `env:"chrome_port"`
+	KafkaBroker string `env:"kafka_broker"`
 }
 
 const (

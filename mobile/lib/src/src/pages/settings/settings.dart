@@ -26,61 +26,64 @@ class _SettingsPageState extends State<SettingsPage> with MixinSettings {
       body: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, settings) {
           return SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                ListTile(
-                  title: Text(
-                    'Please check the dark or light mode theme',
-                    style: ProductTextStyle.i.t12.copyWith(
-                      color: settings.switchData ? Colors.white : Colors.black,
+            child: Padding(
+              padding: Productpadding.h15.padding,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Please check the dark or light mode theme',
+                      style: ProductTextStyle.i.t12.copyWith(
+                        color: settings.switchData ? Colors.white : Colors.black,
+                      ),
+                    ),
+                    trailing: Switch.adaptive(
+                      value: settings.switchData,
+                      onChanged: selectTheme,
                     ),
                   ),
-                  trailing: Switch.adaptive(
-                    value: settings.switchData,
-                    onChanged: selectTheme,
+                  const SizedBox(
+                    height: 30,
                   ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                ListTile(
-                  title: Text(
-                    'Please select product Language',
-                    style: ProductTextStyle.i.t12.copyWith(
-                        color:
-                            settings.switchData ? Colors.white : Colors.black),
-                  ),
-                  trailing: DropdownButton(
-                    padding: Productpadding.h15.padding,
-                    borderRadius: BorderRadius.circular(20),
-                    value: settings.locale,
-                    underline: const SizedBox(),
-                    items: [
-                      ...ProductLocale.values.map(
-                        (e) => DropdownMenuItem(
-                          value: e.locale,
-                          child: Text(e.name),
+                  ListTile(
+                    title: Text(
+                      'Please select product Language',
+                      style: ProductTextStyle.i.t12.copyWith(
+                          color:
+                              settings.switchData ? Colors.white : Colors.black),
+                    ),
+                    trailing: DropdownButton(
+                      padding: Productpadding.h15.padding,
+                      borderRadius: BorderRadius.circular(20),
+                      value: settings.locale,
+                      underline: const SizedBox(),
+                      items: [
+                        ...ProductLocale.values.map(
+                          (e) => DropdownMenuItem(
+                            value: e.locale,
+                            child: Text(e.name),
+                          ),
                         ),
-                      ),
-                    ],
-                    onChanged: selectLocale,
+                      ],
+                      onChanged: selectLocale,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  padding: Productpadding.h15.padding,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: logOut,
-                    child: const Text('Log Out'),
+                  const SizedBox(
+                    height: 30,
                   ),
-                ),
-              ],
+                  Container(
+                    padding: Productpadding.h15.padding,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: logOut,
+                      child: const Text('Log Out'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },

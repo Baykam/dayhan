@@ -10,4 +10,5 @@ final class ProductColor {
   Color transParent = Colors.transparent;
   Color black = Colors.black;
   Color red = Colors.red;
+  Color green = Colors.green;
 }

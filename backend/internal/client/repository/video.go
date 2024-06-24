@@ -23,6 +23,7 @@ type VideoRepositoryInterface interface {
 	GetVideoList(productId int64) (*[]dto.VideoRes, error)
 	CreateVideo(productId int64, imagePath string) (int64, error)
 	DeleteVideoByProductId(productId int64) error
+	DeleteVideoById(id int64) error
 }
 
 func (r *VideoRepository) GetVideoList(productId int64) (*[]dto.VideoRes, error) {
@@ -64,6 +65,15 @@ func (r *VideoRepository) CreateVideo(productId int64, imagePath string) (int64,
 
 func (r *VideoRepository) DeleteVideoByProductId(productId int64) error {
 	query := fmt.Sprintf(`DELETE FROM videos WHERE product_id = '%v'`, productId)
+	_, err := r.db.Exec(query)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *VideoRepository) DeleteVideoById(id int64) error {
+	query := fmt.Sprintf(`DELETE FROM videos WHERE id = '%v'`, id)
 	_, err := r.db.Exec(query)
 	if err != nil {
 		return err

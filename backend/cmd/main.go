@@ -4,6 +4,7 @@ import (
 	_ "dayhan/cmd/docs"
 	"dayhan/internal/packages/config"
 	"dayhan/internal/packages/db"
+	productKafka "dayhan/internal/packages/kafka"
 	rds "dayhan/internal/packages/redis"
 	server "dayhan/internal/server/http"
 
@@ -33,7 +34,13 @@ func main() {
 	}
 	defer rds.Redis.Close()
 
-	httpServer := server.NewServer(validator, dB, *rds)
+	kafka, err := productKafka.InitKafka(*cfg)
+	if err != nil {
+		logger.Errorf("error when kafka connect, error: %v", err)
+	}
+	defer kafka.Conn.Close()
+
+	httpServer := server.NewServer(validator, dB, *rds, *kafka)
 	if err := httpServer.Run(); err != nil {
 		logger.Fatal(err)
 	}

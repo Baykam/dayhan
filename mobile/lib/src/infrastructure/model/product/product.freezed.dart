@@ -20,15 +20,25 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Product {
+  @HiveField(0)
   int? get id => throw _privateConstructorUsedError;
+  @HiveField(1)
   String? get title => throw _privateConstructorUsedError;
+  @HiveField(2)
   String? get description => throw _privateConstructorUsedError;
+  @HiveField(3)
   int? get category_id => throw _privateConstructorUsedError;
+  @HiveField(4)
   double? get price => throw _privateConstructorUsedError;
+  @HiveField(5)
   String? get name => throw _privateConstructorUsedError;
+  @HiveField(6)
   int? get min_order_quantity => throw _privateConstructorUsedError;
+  @HiveField(7)
   double? get rate => throw _privateConstructorUsedError;
+  @HiveField(8)
   List<FileSend>? get images => throw _privateConstructorUsedError;
+  @HiveField(9)
   List<FileSend>? get videos => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,16 +52,16 @@ abstract class $ProductCopyWith<$Res> {
       _$ProductCopyWithImpl<$Res, Product>;
   @useResult
   $Res call(
-      {int? id,
-      String? title,
-      String? description,
-      int? category_id,
-      double? price,
-      String? name,
-      int? min_order_quantity,
-      double? rate,
-      List<FileSend>? images,
-      List<FileSend>? videos});
+      {@HiveField(0) int? id,
+      @HiveField(1) String? title,
+      @HiveField(2) String? description,
+      @HiveField(3) int? category_id,
+      @HiveField(4) double? price,
+      @HiveField(5) String? name,
+      @HiveField(6) int? min_order_quantity,
+      @HiveField(7) double? rate,
+      @HiveField(8) List<FileSend>? images,
+      @HiveField(9) List<FileSend>? videos});
 }
 
 /// @nodoc
@@ -131,16 +141,16 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int? id,
-      String? title,
-      String? description,
-      int? category_id,
-      double? price,
-      String? name,
-      int? min_order_quantity,
-      double? rate,
-      List<FileSend>? images,
-      List<FileSend>? videos});
+      {@HiveField(0) int? id,
+      @HiveField(1) String? title,
+      @HiveField(2) String? description,
+      @HiveField(3) int? category_id,
+      @HiveField(4) double? price,
+      @HiveField(5) String? name,
+      @HiveField(6) int? min_order_quantity,
+      @HiveField(7) double? rate,
+      @HiveField(8) List<FileSend>? images,
+      @HiveField(9) List<FileSend>? videos});
 }
 
 /// @nodoc
@@ -214,16 +224,16 @@ class __$$ProductImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ProductImpl implements _Product {
   const _$ProductImpl(
-      {this.id,
-      this.title,
-      this.description,
-      this.category_id,
-      this.price,
-      this.name,
-      this.min_order_quantity,
-      this.rate,
-      final List<FileSend>? images,
-      final List<FileSend>? videos})
+      {@HiveField(0) this.id,
+      @HiveField(1) this.title,
+      @HiveField(2) this.description,
+      @HiveField(3) this.category_id,
+      @HiveField(4) this.price,
+      @HiveField(5) this.name,
+      @HiveField(6) this.min_order_quantity,
+      @HiveField(7) this.rate,
+      @HiveField(8) final List<FileSend>? images,
+      @HiveField(9) final List<FileSend>? videos})
       : _images = images,
         _videos = videos;
 
@@ -231,23 +241,32 @@ class _$ProductImpl implements _Product {
       _$$ProductImplFromJson(json);
 
   @override
+  @HiveField(0)
   final int? id;
   @override
+  @HiveField(1)
   final String? title;
   @override
+  @HiveField(2)
   final String? description;
   @override
+  @HiveField(3)
   final int? category_id;
   @override
+  @HiveField(4)
   final double? price;
   @override
+  @HiveField(5)
   final String? name;
   @override
+  @HiveField(6)
   final int? min_order_quantity;
   @override
+  @HiveField(7)
   final double? rate;
   final List<FileSend>? _images;
   @override
+  @HiveField(8)
   List<FileSend>? get images {
     final value = _images;
     if (value == null) return null;
@@ -258,6 +277,7 @@ class _$ProductImpl implements _Product {
 
   final List<FileSend>? _videos;
   @override
+  @HiveField(9)
   List<FileSend>? get videos {
     final value = _videos;
     if (value == null) return null;
@@ -322,38 +342,48 @@ class _$ProductImpl implements _Product {
 
 abstract class _Product implements Product {
   const factory _Product(
-      {final int? id,
-      final String? title,
-      final String? description,
-      final int? category_id,
-      final double? price,
-      final String? name,
-      final int? min_order_quantity,
-      final double? rate,
-      final List<FileSend>? images,
-      final List<FileSend>? videos}) = _$ProductImpl;
+      {@HiveField(0) final int? id,
+      @HiveField(1) final String? title,
+      @HiveField(2) final String? description,
+      @HiveField(3) final int? category_id,
+      @HiveField(4) final double? price,
+      @HiveField(5) final String? name,
+      @HiveField(6) final int? min_order_quantity,
+      @HiveField(7) final double? rate,
+      @HiveField(8) final List<FileSend>? images,
+      @HiveField(9) final List<FileSend>? videos}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
 
   @override
+  @HiveField(0)
   int? get id;
   @override
+  @HiveField(1)
   String? get title;
   @override
+  @HiveField(2)
   String? get description;
   @override
+  @HiveField(3)
   int? get category_id;
   @override
+  @HiveField(4)
   double? get price;
   @override
+  @HiveField(5)
   String? get name;
   @override
+  @HiveField(6)
   int? get min_order_quantity;
   @override
+  @HiveField(7)
   double? get rate;
   @override
+  @HiveField(8)
   List<FileSend>? get images;
   @override
+  @HiveField(9)
   List<FileSend>? get videos;
   @override
   @JsonKey(ignore: true)

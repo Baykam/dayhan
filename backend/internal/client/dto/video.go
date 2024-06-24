@@ -1,6 +1,7 @@
 package dto
 
 type VideoRes struct {
+	Id  int64  `json:"id"`
 	URL string `json:"url"`
 }
 
