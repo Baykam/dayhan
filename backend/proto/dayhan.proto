@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package dayhanGrpc;
+
+option go_package = "path/to/your/package/dayhanGrpc";
+
+import "google/protobuf/timestamp.proto";
+
+
+service DayhanGrpc {
+  rpc GetProductList (EmptyRequest) returns (ProductListResponse);
+}
+
+message EmptyRequest {}
+
+message ProductListResponse {
+  repeated ProductResponse products = 1;
+}
+
+message ProductResponse {
+  string     title = 1;
+	string     description = 2;
+	repeated   int64    cateodyId = 3;
+	double    price = 4;
+	string     name = 5;
+	int64      minOrderQuantity = 6;
+	double    rate = 7;
+	repeated   ImageRes images = 8;
+	repeated VideoRes videos = 9;
+	google.protobuf.Timestamp  updatedAt = 10;
+}
+
+message ProductRequest {
+  string message = 1;
+}
+
+message ImageRes {
+  int64 id = 1;
+  string url = 2;
+}
+
+message ImageReq{
+  string name = 1;
+  string url = 2;
+}
+message VideoRes {
+  int64 id = 1;
+  string url = 2;
+}
+
+message VideoReq{
+  string name = 1;
+  string url = 2;
+}

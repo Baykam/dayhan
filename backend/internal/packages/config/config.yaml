@@ -1,4 +1,6 @@
 environment: production
+grpc_port: 12000
+grpc_protocol: "tcp"
 http_port: 9999
 host: 192.168.1.109
 # host: "127.0.0.3"

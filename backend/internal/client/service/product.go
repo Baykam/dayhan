@@ -141,34 +141,44 @@ func (p *ProductService) CreateProduct(req *dto.ProductCreateRequest, userId str
 			Key:   []byte(userId),
 			Value: productJson,
 		})
-		p.conn.Conn.SetReadDeadline(time.Now().Add(10 * time.Second))
-		batch := p.conn.Conn.ReadBatch(10e3, 1e6)
-		defer batch.Close()
+		ll, err := p.conn.Conn.ReadPartitions(defaa.KafkaTopicNotification, defaa.KafkaTopicTalking)
+		if err != nil {
+			return
+		}
 
-		for {
-			// message := kafka.Message{}
-			t, err := batch.ReadMessage()
-			if err != nil {
-				if err == kafka.ErrGenerationEnded {
-					break
+		for _, v := range ll {
+			if v.Topic == defaa.KafkaTopicNotification {
+				p.conn.Conn.SetReadDeadline(time.Now().Add(10 * time.Second))
+				batch := p.conn.Conn.ReadBatch(10e3, 1e6)
+				defer batch.Close()
+
+				for {
+					// message := kafka.Message{}
+					t, err := batch.ReadMessage()
+					if err != nil {
+						if err == kafka.ErrGenerationEnded {
+							break
+						}
+						continue
+					}
+					// Deserialize the message value to check the productId
+					var msgProduct dto.ProductRes
+					err = json.Unmarshal(t.Value, &msgProduct)
+					if err != nil {
+						log.Printf("error when unmarshaling message: %v", err)
+						continue
+					}
+
+					// Filter messages by productId
+					if msgProduct.Id == product.Id {
+						log.Printf("Message read from kafka with productId %d: %s\n", msgProduct.Id, string(t.Value))
+						// Process the message as needed
+						break
+					}
 				}
-				continue
-			}
-			// Deserialize the message value to check the productId
-			var msgProduct dto.ProductRes
-			err = json.Unmarshal(t.Value, &msgProduct)
-			if err != nil {
-				log.Printf("error when unmarshaling message: %v", err)
-				continue
-			}
-
-			// Filter messages by productId
-			if msgProduct.Id == product.Id {
-				log.Printf("Message read from kafka with productId %d: %s\n", msgProduct.Id, string(t.Value))
-				// Process the message as needed
-				break
 			}
 		}
+
 	}()
 	return product, nil
 }

@@ -6,6 +6,7 @@ import (
 	"dayhan/internal/packages/db"
 	productKafka "dayhan/internal/packages/kafka"
 	rds "dayhan/internal/packages/redis"
+	grpcServer "dayhan/internal/server/grpc"
 	server "dayhan/internal/server/http"
 
 	"github.com/quangdangfit/gocommon/logger"
@@ -44,4 +45,11 @@ func main() {
 	if err := httpServer.Run(); err != nil {
 		logger.Fatal(err)
 	}
+
+	go func() {
+		grpc := grpcServer.NewGrpcServer(cfg, validator, dB, *rds, *kafka)
+		if err := grpc.Run(); err != nil {
+			logger.Fatal(err)
+		}
+	}()
 }

@@ -11,17 +11,19 @@ import (
 )
 
 type Schema struct {
-	DbUrl       string `env:"db_url"`
-	HttpPort    int    `env:"http_port"`
-	Environment string `env:"environment"`
-	RedisAddr   string `env:"rds_addr"`
-	RedisPass   string `env:"rds_pas"`
-	RedisDb     int    `env:"rds_db"`
-	AuthKey     string `env:"auth_key"`
-	UserKey     string `env:"user_key"`
-	Host        string `env:"host"`
-	ChromePort  int    `env:"chrome_port"`
-	KafkaBroker string `env:"kafka_broker"`
+	DbUrl        string `env:"db_url"`
+	HttpPort     int    `env:"http_port"`
+	Environment  string `env:"environment"`
+	RedisAddr    string `env:"rds_addr"`
+	RedisPass    string `env:"rds_pas"`
+	RedisDb      int    `env:"rds_db"`
+	AuthKey      string `env:"auth_key"`
+	UserKey      string `env:"user_key"`
+	Host         string `env:"host"`
+	ChromePort   int    `env:"chrome_port"`
+	KafkaBroker  string `env:"kafka_broker"`
+	GrpcPort     int    `env:"grpc_port"`
+	GrpcProtocol string `env:"grpc_protocol"`
 }
 
 const (
