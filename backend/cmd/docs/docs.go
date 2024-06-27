@@ -19,12 +19,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "1.0",
+	Host:             "192.168.1.184:9999",
+	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "Tag Service API",
-	Description:      "",
+	Description:      "A Tag service API in GO using gin framework",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

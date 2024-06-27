@@ -29,6 +29,14 @@ func NewPort(rds rds.RedisDatabase, token token.TokenService, service service.Au
 	}
 }
 
+// CreateTags      godoc
+// @Summary        Create Tags
+// @Description    Post phone number get verification_key and sms
+// @Param          tags body dto.PhonePostReq true "Post phone"
+// @Produce        application/json
+// @Tags           tags
+// @Success        200 {object} response.Response
+// @Router         /tags [post]
 func (p Port) PostAuthUser(c *gin.Context) {
 	var req dto.PhonePostReq
 	if err := c.BindJSON(&req); err != nil {

@@ -27,6 +27,14 @@ func NewHttpPost(db *sql.DB, validator validation.Validation,
 	}
 }
 
+// Hello godoc
+// @Tags hello v1
+// @Summary hello
+// @Description hello
+// @Accept json
+// @Produce json
+// @Success 200 {object} entity.ApiResponse
+// @Router /v1/hello [get]
 func (h *HttpPort) GetProductList(c *gin.Context) {
 	u := c.GetString(defaa.SetUserId)
 	if u == "" {

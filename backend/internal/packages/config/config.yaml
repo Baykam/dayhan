@@ -1,8 +1,8 @@
 environment: production
-grpc_port: 12000
+grpc_port: 9998
 grpc_protocol: "tcp"
 http_port: 9999
-host: 192.168.1.109
+host: 192.168.1.184
 # host: "127.0.0.3"
 # for web cors port number
 # chrome_port: 45972

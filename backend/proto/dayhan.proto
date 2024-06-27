@@ -9,6 +9,8 @@ import "google/protobuf/timestamp.proto";
 
 service DayhanGrpc {
   rpc GetProductList (EmptyRequest) returns (ProductListResponse);
+  rpc GetProductListStream (EmptyRequest) returns (stream ProductListResponse);
+  rpc ChatUsers (stream ChatReq) returns (stream ChatRes);
 }
 
 message EmptyRequest {}
@@ -18,20 +20,31 @@ message ProductListResponse {
 }
 
 message ProductResponse {
-  string     title = 1;
-	string     description = 2;
-	repeated   int64    cateodyId = 3;
-	double    price = 4;
-	string     name = 5;
-	int64      minOrderQuantity = 6;
-	double    rate = 7;
-	repeated   ImageRes images = 8;
-	repeated VideoRes videos = 9;
-	google.protobuf.Timestamp  updatedAt = 10;
+  int64 id = 1;
+  string     title = 2;
+	string     description = 3;
+	repeated   int64    categoryId = 4;
+	double    price = 5;
+	string     name = 6;
+	int64      minOrderQuantity = 7;
+	double    rate = 8;
+	repeated   ImageRes images = 9;
+	repeated VideoRes videos = 10;
+	google.protobuf.Timestamp  updatedAt = 11;
 }
 
 message ProductRequest {
-  string message = 1;
+  int64 id = 1;
+  string     title = 2;
+	string     description = 3;
+	repeated   int64    categoryId = 4;
+	double    price = 5;
+	string     name = 6;
+	int64      minOrderQuantity = 7;
+	double    rate = 8;
+	repeated   ImageRes images = 9;
+	repeated VideoRes videos = 10;
+	google.protobuf.Timestamp  updatedAt = 11;
 }
 
 message ImageRes {
@@ -51,4 +64,29 @@ message VideoRes {
 message VideoReq{
   string name = 1;
   string url = 2;
+}
+
+message ProductCreateRequest {
+  string     title = 2;
+	string     description = 3;
+	repeated   int64    categoryId = 4;
+	double    price = 5;
+	string     name = 6;
+	int64      minOrderQuantity = 7;
+	double    rate = 8;
+	repeated   ImageRes images = 9;
+	repeated VideoRes videos = 10;
+	google.protobuf.Timestamp  updatedAt = 11;
+}
+
+message ChatReq{
+	string chatTitle = 1;
+	string chatId = 2;
+	string userId = 3;
+}
+
+message ChatRes{
+	string chatTitle = 1;
+	string chatId = 2;
+	repeated string chatMessages = 3;
 }

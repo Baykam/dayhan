@@ -44,7 +44,7 @@ func NewGrpcServer(cfg *config.Schema, validator validation.Validation, db *sql.
 }
 
 func (s *GrpcServer) Run() error {
-	grpcPort.RegisterHandlers(s.engine, s.db)
+	grpcPort.RegisterHandlers(s.engine, s.db, *s.cfg, s.kfk)
 
 	reflection.Register(s.engine)
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", s.cfg.GrpcPort))

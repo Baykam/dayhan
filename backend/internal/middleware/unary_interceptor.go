@@ -12,7 +12,7 @@ import (
 
 type contextKey string
 
-const userIDKey contextKey = "userId"
+const UserIDKey contextKey = "userId"
 
 type wrappedServerStream struct {
 	grpc.ServerStream
@@ -28,7 +28,8 @@ func WrapServerStream(stream grpc.ServerStream, ctx context.Context) grpc.Server
 }
 
 func UnaryAuthInterceptor(tokenService token.TokenService) grpc.UnaryServerInterceptor {
-	return func(ctx context.Context,
+	return func(
+		ctx context.Context,
 		req interface{},
 		info *grpc.UnaryServerInfo,
 		handler grpc.UnaryHandler,
@@ -53,7 +54,7 @@ func UnaryAuthInterceptor(tokenService token.TokenService) grpc.UnaryServerInter
 			return nil, status.Errorf(codes.Unauthenticated, "invalid token: %v", err)
 		}
 
-		ctx = context.WithValue(ctx, userIDKey, response.UserID)
+		ctx = context.WithValue(ctx, UserIDKey, response.UserID)
 		return handler(ctx, req)
 	}
 }
@@ -85,7 +86,8 @@ func StreamAuthInterceptor(tokenService token.TokenService) grpc.StreamServerInt
 			return status.Errorf(codes.Unauthenticated, "invalid token: %v", err)
 		}
 
-		wrapped := WrapServerStream(ss, context.WithValue(ss.Context(), userIDKey, response.UserID))
+		wrapped := WrapServerStream(ss, context.WithValue(ss.Context(), UserIDKey, response.UserID))
+
 		return handler(srv, wrapped)
 	}
 }

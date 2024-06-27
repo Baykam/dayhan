@@ -14,6 +14,11 @@ import (
 )
 
 // @title Tag Service API
+// @version 1.0
+// @description A Tag service API in GO using gin framework
+
+// @host 192.168.1.184:9999
+// @BasePath  /api
 func main() {
 	cfg := config.LoadConfig()
 	logger.Initialize(cfg.Environment)
